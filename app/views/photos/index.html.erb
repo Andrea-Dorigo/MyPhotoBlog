@@ -1,0 +1,16 @@
+<h1>Photo Blog</h1>
+<div id="gallery" class="js-flickity">
+  <%= image_tag @photourl[0] , :class => 'image gallery-cell' %>
+  <%= image_tag @photourl[1] , :class => 'image gallery-cell' %>
+  <%= image_tag @photourl[2] , :class => 'image gallery-cell' %>
+  <%= image_tag @photourl[3] , :class => 'image gallery-cell' %>
+  <%= image_tag @photourl[4] , :class => 'image gallery-cell' %>
+</div>
+<h2>Number of results: </h2>
+<button onclick="myFunction()">Try it</button>
+<p>
+  <%= @photo['total_results'] %>
+</p>
+<p>
+    <%= @photourl %>
+</p>
