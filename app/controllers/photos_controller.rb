@@ -23,6 +23,8 @@ class PhotosController < ApplicationController
     i = 0
     k = 0
 
+
+    # TODO: migliorare entrambi i cicli, renderli piu' efficienti e piu' comprensiili
     while i < 3
       # @words_array.push(parsed["data"].sample)
       # puts i.to_s
@@ -62,7 +64,8 @@ class PhotosController < ApplicationController
     response = Excon.get(
       url,
       headers: {
-        'Authorization' => ENV.("PEXELS_API_KEY")
+        'Authorization' => ENV.fetch('PEXELS_API_KEY')
+        # 'Authorization' => ENV["PEXELS_API_KEY"]
         # 'Authorization' => '563492ad6f917000010000012fdc3c81638f48b2a3a31e02d07b3f3c'
       }
     )

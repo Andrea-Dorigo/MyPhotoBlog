@@ -1,12 +1,12 @@
-<h1>Photo Blog</h1>
-<div id="gallery" class="js-flickity">
-  <%= image_tag @photourl[0] , :class => 'image gallery-cell' %>
-  <%= image_tag @photourl[1] , :class => 'image gallery-cell' %>
-  <%= image_tag @photourl[2] , :class => 'image gallery-cell' %>
-  <%= image_tag @photourl[3] , :class => 'image gallery-cell' %>
-  <%= image_tag @photourl[4] , :class => 'image gallery-cell' %>
+<!-- <h1>Photo Blog</h1> -->
+<div id="gallery" class="js-flickity carousel" data-flickity='{ "autoPlay": 4000 }'>
+  <%= image_tag @photourl[0] , :class => 'image carousel-cell' %>
+  <%= image_tag @photourl[1] , :class => 'image carousel-cell' %>
+  <%= image_tag @photourl[2] , :class => 'image carousel-cell' %>
+  <%= image_tag @photourl[3] , :class => 'image carousel-cell' %>
+  <%= image_tag @photourl[4] , :class => 'image carousel-cell' %>
 </div>
-<h2>Number of results for first photo (test): </h2>
+<!-- <h2>Number of results for first photo (test): </h2>
 <p>
-  <%= @photo['total_results'] %>
-</p>
+  <%# <%= @photo['total_results'] %> %>
+</p> -->

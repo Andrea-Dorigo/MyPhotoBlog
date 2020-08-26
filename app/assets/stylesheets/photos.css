@@ -2,8 +2,21 @@
 
 /* TODO: learn SCSS and SASS */
 
-.image {
+.carousel {
   width: 300px;
-  height: 300px;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.carousel-cell {
   object-fit: cover;
+  height: 300px;
+  width: 100%;
+  border-radius: 15px;
+}
+.flickity-page-dots {
+  display: none;
+}
+.flickity-button {
+  display: none;
 }
