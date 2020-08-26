@@ -62,7 +62,7 @@ class PhotosController < ApplicationController
     response = Excon.get(
       url,
       headers: {
-        'Authorization' => ENV.fetch('PEXELS_API_KEY')
+        'Authorization' => ENV.("PEXELS_API_KEY")
         # 'Authorization' => '563492ad6f917000010000012fdc3c81638f48b2a3a31e02d07b3f3c'
       }
     )
