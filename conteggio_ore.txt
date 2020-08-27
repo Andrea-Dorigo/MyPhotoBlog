@@ -1,0 +1,51 @@
+Conteggio ore Andrea Dorigo - Vitamino
+
+Lunedi    17 Agosto
+
+	1h 30 min	Informazioni ruby on rails, ricerca di un tutorial adeguato per un primo approccio.
+			Breve documentazione sul perche' usare ruby on rails (o perche' no).
+			Setup iniziale di ruby, rails, gems, atom e visual studio code.
+
+Martedi	  18 Agosto
+
+	3h 30 min	Discussione progetto con Daniele, chiarimenti dei dubbi e domande sul tema.
+			Completamento tutorial Simpleblog ( https://www.youtube.com/watch?v=pPy0GQJLZUM ).
+
+Mercoledi 19 Agosto
+
+	3h 15 min	Ripasso tutorial e nozioni base.
+			Ricerca informazioni sul funzionamento delle API in ruby (in particolare Pexels API)
+										 e relativa implementazione.	
+Giovedi	  20 Agosto			
+	
+	4h		Elaborazione immagini prese dalla Pexels API e la loro logica.
+			Informazioni sul come ottenere le random words dalla pagina web (parsing? API?).
+			
+Venerdi	  21 Agosto
+	
+	3h		Implementazione del generatore di parole random (request, non parsing!).
+			Generazione tramite cicli dei blocchi di immagini tramite queste parole random. 
+
+Domenica  23 Agosto
+	
+	2h 30 min	Importazione di js e css personalizzato, principalmente per lo slideshow.
+			
+Martedi   25 Agosto
+
+	3h 30 min	Installazione heroku e deploy del project (con qualche problema).
+			Creazione del nuovo progetto che utilizza Postgres anziche' sqlite3.
+			Migrazione del tutto sul nuovo progetto e caricamento funzionante su heroku
+										(compila correttamente)
+Mercoledi 26 Agosto
+
+	4h		Generazione slideshow di prova con flickity.
+			Tentativo di implementazione manuale di uno scroll verticale anziche' orizzontale.
+			Rimossa l'hard coded api key.
+			Generazione dello scheletro della scs grid.
+
+Giovedi   27 Agosto	
+
+	3h 30 min	Popolamento grid con immagini.
+			Ripulitura del codice css.
+			Creazione cicli per popolare gli slideshow.
+			Ripasso creazione Blog su Ruby on Rails.	
