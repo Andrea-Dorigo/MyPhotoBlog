@@ -1,6 +1,13 @@
 <h1>Photo Blog</h1>
-<div id="photo-gallery">
 
+<% @words_array.each do |word| %>
+  <%= content_tag :p, class: "random_word" do -%>
+    <% word %>
+  <% end -%>
+<% end %>
+
+
+<div id="photo-gallery">
 <!--could I use "each"? Is it better? -->
 <!--maybe a 2-dimensional array can make loops clearer -->
   <% for i in 0..7 do %>

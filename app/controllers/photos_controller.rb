@@ -20,8 +20,6 @@ class PhotosController < ApplicationController
     #TODO: si potrebbe aggiungere il controllo per evitare duplicati, pur restando un'evenienza molto rara
     i = 0
     k = 0
-
-
     # TODO: migliorare entrambi i cicli, renderli piu' efficienti e piu' comprensiili
     while i < 3
       # @words_array.push(parsed["data"].sample)
