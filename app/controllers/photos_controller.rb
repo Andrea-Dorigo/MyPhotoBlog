@@ -1,16 +1,14 @@
 class PhotosController < ApplicationController
 
   include HTTParty
-  # include Nokogiri
-
   def index
-
     getwords
-    # querystring = @words_array.first
-    # search(querystring)
-
+    @comments = Comment.all
   end
 
+  def show
+    @comment = Comment.find(params[:id])
+  end
   def getwords
 
     require 'open-uri'

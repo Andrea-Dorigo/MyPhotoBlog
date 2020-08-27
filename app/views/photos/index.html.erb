@@ -55,3 +55,9 @@
   </p>
 
 <% end %>
+
+<% @comments.each do |comment| %>
+  <h3><%= comment.name %></h3>
+  <h3><%= comment.email %></h3>
+  <p><%= comment.body %></p>
+<%end %>
