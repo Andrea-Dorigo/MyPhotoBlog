@@ -1,10 +1,42 @@
-<!-- <h1>Photo Blog</h1> -->
-<div id="gallery" class="js-flickity carousel" data-flickity='{ "autoPlay": 4000 }'>
-  <%= image_tag @photourl[0] , :class => 'image carousel-cell' %>
-  <%= image_tag @photourl[1] , :class => 'image carousel-cell' %>
-  <%= image_tag @photourl[2] , :class => 'image carousel-cell' %>
-  <%= image_tag @photourl[3] , :class => 'image carousel-cell' %>
-  <%= image_tag @photourl[4] , :class => 'image carousel-cell' %>
+<h1>Photo Blog</h1>
+<div id="photo-gallery">
+
+  <div class="js-flickity carousel block-A1" data-flickity='{
+    "autoPlay": 4000,
+    "wrapAround": true,
+    "draggable": false
+    }'>
+    <!-- TODO: add a loop to create these image tags -->
+    <%= image_tag @photourl[0] , :class => 'carousel-cell' %>
+    <%= image_tag @photourl[1] , :class => 'carousel-cell' %>
+    <%= image_tag @photourl[2] , :class => 'carousel-cell' %>
+    <%= image_tag @photourl[3] , :class => 'carousel-cell' %>
+    <%= image_tag @photourl[4] , :class => 'carousel-cell' %>
+  </div>
+
+
+  <div class="carousel block-B1"></div>
+
+  <div class="js-flickity carousel block-A2" data-flickity='{
+    "autoPlay": 4000,
+    "wrapAround": true,
+    "draggable": false
+    }'>
+    <!-- TODO: add a loop to create these image tags -->
+    <%= image_tag @photourl[5] , :class => 'carousel-cell' %>
+    <%= image_tag @photourl[6] , :class => 'carousel-cell' %>
+    <%= image_tag @photourl[7] , :class => 'carousel-cell' %>
+    <%= image_tag @photourl[8] , :class => 'carousel-cell' %>
+    <%= image_tag @photourl[9] , :class => 'carousel-cell' %>
+  </div>
+  <div class="carousel block-A3"></div>
+  <div class="carousel block-B2"></div>
+  <div class="carousel block-C1"></div>
+  <div class="carousel block-C2"></div>
+  <div class="carousel block-V"></div>
+
+
+
 </div>
 <!-- <h2>Number of results for first photo (test): </h2>
 <p>

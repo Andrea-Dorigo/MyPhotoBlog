@@ -1,16 +1,72 @@
 
+* {
+  margin:0;
+  padding:0;
+}
+h1 {
+  margin-bottom: 3em;
+}
+/* TODO: learn SCSS and SASS and update the stylesheet */
+/* TODO: substitute css variables where it"s useful (now that I finally CAN use variables) */
 
-/* TODO: learn SCSS and SASS */
+ .block-A1 {
+   grid-area: block-A1 ;
+   background-color: green;
+ }
 
+.block-A2 {
+  grid-area: block-A2 ;
+  background-color:red;
+}
+.block-A3 {
+  grid-area: block-A3 ;
+  background-color:red;
+}
+.block-B1 {
+  grid-area: block-B1 ;
+  background-color:blue;
+}
+.block-B2 {
+  grid-area: block-B2 ;
+  background-color:blue;
+}
+.block-C1 {
+  grid-area: block-C1 ;
+  background-color:blue;
+}
+.block-C2 {
+  grid-area: block-C2 ;
+  background-color:blue;
+}
+.block-V {
+  grid-area: block-V ;
+  background-color:blue;
+}
+#photo-gallery {
+  width: 100%;
+  max-width: 1440px;
+  height: 600px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr 2fr 2fr;
+  grid-template-rows: 3fr 1fr 2fr 3fr;
+  grid-template-areas: "block-A1 block-A1 block-B1 block-A2 block-C1"
+  "block-A1 block-A1 block-C2 block-A2 block-C1"
+  "block-A1 block-A1 block-C2 block-V block-V"
+  "block-B2 block-A3 block-A3 block-V block-V";
+  grid-gap: 20px;
+}
+
+          /* flickity selectors */
 .carousel {
-  width: 300px;
+  width: 100%;
+  height: 100%;
   border-radius: 15px;
   overflow: hidden;
 }
 
 .carousel-cell {
   object-fit: cover;
-  height: 300px;
+  height: 100%;
   width: 100%;
   border-radius: 15px;
 }

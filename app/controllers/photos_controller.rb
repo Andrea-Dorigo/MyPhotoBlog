@@ -29,17 +29,17 @@ class PhotosController < ApplicationController
       # @words_array.push(parsed["data"].sample)
       # puts i.to_s
       word = parsed["data"].sample
+      puts word.to_s
       # puts  "i = " + i.to_s + " " + @words_array[i]
 
       #TODO spostare fuori in una funzione meglio definita
       @photo = find_photo(word)
 
-      if @photo["total_results"] < 20 # 20 = blocco (A + B + C) * 5 + possibilita' di rimpiazzare il video V con altre 5 foto se non e' presente
-        # puts "-------"
-        puts i.to_s
+      if @photo["total_results"] < 5
 
       else
-
+        
+        k=0;
         while k < 5
           @photourl.push(@photo["photos"][k]["src"]["medium"])
           k += 1
