@@ -1,44 +1,42 @@
 <h1>Photo Blog</h1>
 <div id="photo-gallery">
 
-  <div class="js-flickity carousel block-A1" data-flickity='{
-    "autoPlay": 4000,
-    "wrapAround": true,
-    "draggable": false
-    }'>
-    <!-- TODO: add a loop to create these image tags -->
-    <%= image_tag @photourl[0] , :class => 'carousel-cell' %>
-    <%= image_tag @photourl[1] , :class => 'carousel-cell' %>
-    <%= image_tag @photourl[2] , :class => 'carousel-cell' %>
-    <%= image_tag @photourl[3] , :class => 'carousel-cell' %>
-    <%= image_tag @photourl[4] , :class => 'carousel-cell' %>
-  </div>
-
-
-  <div class="carousel block-B1"></div>
-
-  <div class="js-flickity carousel block-A2" data-flickity='{
-    "autoPlay": 4000,
-    "wrapAround": true,
-    "draggable": false
-    }'>
-    <!-- TODO: add a loop to create these image tags -->
-    <%= image_tag @photourl[5] , :class => 'carousel-cell' %>
-    <%= image_tag @photourl[6] , :class => 'carousel-cell' %>
-    <%= image_tag @photourl[7] , :class => 'carousel-cell' %>
-    <%= image_tag @photourl[8] , :class => 'carousel-cell' %>
-    <%= image_tag @photourl[9] , :class => 'carousel-cell' %>
-  </div>
-  <div class="carousel block-A3"></div>
-  <div class="carousel block-B2"></div>
-  <div class="carousel block-C1"></div>
-  <div class="carousel block-C2"></div>
-  <div class="carousel block-V"></div>
-
-
+<!--could I use "each"? Is it better? -->
+<!--maybe a 2-dimensional array can make loops clearer -->
+  <% for i in 0..7 do %>
+    <%= content_tag :div, class: ["js-flickity", "carousel"], data: { flickity:  { "autoPlay": 4000,
+                 "wrapAround": true,
+                 "draggable": false
+               } } do -%>
+      <% if (i<3) %>
+        <% for j in 0..4 do %>
+          <%= image_tag @photourl[j] , :class => 'carousel-cell' %>
+        <% end %>
+      <% end %>
+      <% if (i>2 && i<5) %>
+        <% for j in 5..9 do %>
+          <%= image_tag @photourl[j] , :class => 'carousel-cell' %>
+        <% end %>
+      <% end %>
+      <% if (i>4 && i<7) %>
+        <% for j in 10..14 do %>
+          <%= image_tag @photourl[j] , :class => 'carousel-cell' %>
+        <% end %>
+      <% end %>
+      <% if (i==7) %>
+        <% for j in 0..4 do %>
+          <%= image_tag @photourl[j] , :class => 'carousel-cell' %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
 
 </div>
-<!-- <h2>Number of results for first photo (test): </h2>
-<p>
-  <%# <%= @photo['total_results'] %> %>
-</p> -->
+
+
+<!--
+:data-flickity => '{
+  "autoPlay": 4000,
+  "wrapAround": true,
+  "draggable": false
+  }'  -->
