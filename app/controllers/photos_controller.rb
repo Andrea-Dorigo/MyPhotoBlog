@@ -38,7 +38,7 @@ class PhotosController < ApplicationController
       if @photo["total_results"] < 5
 
       else
-        
+
         k=0;
         while k < 5
           @photourl.push(@photo["photos"][k]["src"]["medium"])

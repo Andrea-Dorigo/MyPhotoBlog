@@ -49,3 +49,4 @@ Giovedi   27 Agosto
 			Ripulitura del codice css.
 			Creazione cicli per popolare gli slideshow.
 			Ripasso creazione Blog su Ruby on Rails.	
+			Creazione db e form d'inserimento di Comments.

@@ -3,4 +3,6 @@ Rails.application.routes.draw do
 
       root 'photos#index', as: 'home'
 
+
+      resources :comments
 end

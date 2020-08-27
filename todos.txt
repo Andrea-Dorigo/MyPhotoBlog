@@ -1,0 +1,14 @@
+Required:
+
+   - Random autoplay times
+   - Add vertical scrolling to blocks B
+
+Advised:
+   - Modules for views
+   - Better loops
+
+Optional:
+
+   - Add options to edit or remove a comment
+   - Better error handling
+   - Fetch optimised photos

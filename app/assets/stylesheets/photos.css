@@ -50,12 +50,12 @@ h1 {
   height: 100%;
   width: 100%;
   border-radius: 15px;
-  /* animation: ease 1s; */
+  animation: ease 1s;
 }
-/* .carousel-cell:hover {
+.carousel-cell:hover {
   transform: scale(1.1);
   animation: ease 1s;
-} */
+}
 .flickity-page-dots {
   display: none;
 }
