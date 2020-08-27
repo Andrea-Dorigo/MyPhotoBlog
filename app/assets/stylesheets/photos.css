@@ -11,40 +11,15 @@ h1 {
 
 
 
-/* block A1 */
- .carousel:nth-child(1) {
-   grid-area: block-A1 ;
-   background-color: green;
- }
-
-.carousel:nth-child(2) {
-  grid-area: block-A2 ;
-  background-color:red;
-}
-.carousel:nth-child(3) {
-  grid-area: block-A3 ;
-  background-color:red;
-}
-.carousel:nth-child(4){
-  grid-area: block-B1 ;
-  background-color:blue;
-}
-.carousel:nth-child(5) {
-  grid-area: block-B2 ;
-  background-color:blue;
-}
-.carousel:nth-child(6) {
-  grid-area: block-C1 ;
-  background-color:blue;
-}
-.carousel:nth-child(7){
-  grid-area: block-C2 ;
-  background-color:blue;
-}
-.carousel:nth-child(8){
-  grid-area: block-V ;
-  background-color:blue;
-}
+/* assigns blocks to grid areas */
+.carousel:nth-child(1) {grid-area: block-A1 ;}
+.carousel:nth-child(2) {grid-area: block-A2 ;}
+.carousel:nth-child(3) {grid-area: block-A3 ;}
+.carousel:nth-child(4) {grid-area: block-B1 ;}
+.carousel:nth-child(5) {grid-area: block-B2 ;}
+.carousel:nth-child(6) {grid-area: block-C1 ;}
+.carousel:nth-child(7) {grid-area: block-C2 ;}
+.carousel:nth-child(8) {grid-area: block-V  ;}
 
 #photo-gallery {
   margin-left: auto;
@@ -75,7 +50,12 @@ h1 {
   height: 100%;
   width: 100%;
   border-radius: 15px;
+  /* animation: ease 1s; */
 }
+/* .carousel-cell:hover {
+  transform: scale(1.1);
+  animation: ease 1s;
+} */
 .flickity-page-dots {
   display: none;
 }
