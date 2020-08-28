@@ -30,12 +30,13 @@ class PhotosController < ApplicationController
 
       #TODO spostare fuori in una funzione meglio definita
       @photo = find_photo(word)
-
-      if @photo["total_results"] < 20
-        puts @photo["total_results"].to_s
+      # puts @photo["total_results"].to_s
+      if @photo["total_results"] < 40
+        puts "not enough results for: " + word.to_s
       else
         k=0;
-        while k < 15
+        while k < 40
+          puts @photo["photos"][k]["src"]["medium"].to_s
           @photourl.push(@photo["photos"][k]["src"]["medium"])
           # puts @photourl.length.to_s
           k += 1
@@ -71,7 +72,8 @@ class PhotosController < ApplicationController
   end
 
   def find_photo(query)
-    request_api("https://api.pexels.com/v1/search?query=" + query)
+    # TODO: use pexels ruby methods
+    request_api("https://api.pexels.com/v1/search?query=" + query + "&per_page=40")
   end
 
 end

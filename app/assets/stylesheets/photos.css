@@ -19,7 +19,7 @@ ul.random_words_list {
 }
 li.random_word {
   list-style-type: none;
-  width: 14em;
+  width: 10em;
   text-align: center;
   display: block;
   border: 1px solid #aaa;
@@ -30,7 +30,7 @@ li.random_word {
   font-weight: 300;
 
 }
-li.random_word:first-child {
+li.random_word:last-child {
   background-color: #ff3b8e;
   font-weight: bold;
   color: white;
