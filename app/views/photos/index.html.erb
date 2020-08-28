@@ -1,11 +1,12 @@
 <h1>Photo Blog</h1>
 
-<% @words_array.each do |word| %>
-  <%= content_tag :p, class: "random_word" do -%>
-    <% word %>
-  <% end -%>
-<% end %>
-
+<ul class="random_words_list">
+  <% @words_array.each do |word| %>
+    <%= content_tag :li, class: "random_word" do -%>
+      <% word %>
+    <% end -%>
+  <% end %>
+</ul>
 
 <div id="photo-gallery">
 <!--could I use "each"? Is it better? -->
@@ -15,24 +16,26 @@
                  "wrapAround": true,
                  "draggable": false
                } } do -%>
-      <% if (i<3) %>
-        <% for j in 0..4 do %>
-          <%= image_tag @photourl[j] , :class => 'carousel-cell' %>
-        <% end %>
-      <% end %>
-      <% if (i>2 && i<5) %>
-        <% for j in 5..9 do %>
-          <%= image_tag @photourl[j] , :class => 'carousel-cell' %>
-        <% end %>
-      <% end %>
-      <% if (i>4 && i<7) %>
-        <% for j in 10..14 do %>
-          <%= image_tag @photourl[j] , :class => 'carousel-cell' %>
-        <% end %>
-      <% end %>
-      <% if (i==7) %>
-        <%= image_tag @photourl[3] , :class => 'carousel-cell' %>
-      <% end %>
+
+               <% if (i<3) %>
+                 <% for j in 0..4 do %>
+                   <%= image_tag @photourl[j] , :class => 'carousel-cell' %>
+                 <% end %>
+               <% end %>
+               <% if (i>2 && i<5) %>
+                 <% for j in 5..9 do %>
+                   <%= image_tag @photourl[j] , :class => 'carousel-cell' %>
+                 <% end %>
+               <% end %>
+               <% if (i>4 && i<7) %>
+                 <% for j in 10..14 do %>
+                   <%= image_tag @photourl[j] , :class => 'carousel-cell' %>
+                 <% end %>
+               <% end %>
+               <% if (i==7) %>
+                 <%= image_tag @photourl[3] , :class => 'carousel-cell' %>
+               <% end %>
+
     <% end %>
   <% end %>
 
@@ -41,7 +44,6 @@
 <h2>Add a comment</h2>
 
 <%= form_for :comment, url: comments_path do |f| %>
-
   <p>
       <%= f.label :name %><br>
       <%= f.text_field(:name) %>
@@ -53,16 +55,11 @@
   <p>
       <%= f.label :body %><br>
       <%= f.text_area(:body) %>
-
   </p>
   <p>
       <%= f.submit %>
-
-
   </p>
-
 <% end %>
-
 <% @comments.each do |comment| %>
   <h3><%= comment.name %></h3>
   <h3><%= comment.email %></h3>

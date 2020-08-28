@@ -1,14 +1,13 @@
 Required:
-
+   - nil photo handling
    - Random autoplay times
    - Add vertical scrolling to blocks B
-
+   
 Advised:
    - Modules for views
    - Better loops
-
-Optional:
-
-   - Add options to edit or remove a comment
+   - Make the app faster
    - Better error handling
+Optional:
+   - Add options to edit or remove a comment
    - Fetch optimised photos

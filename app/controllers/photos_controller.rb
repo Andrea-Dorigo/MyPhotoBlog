@@ -31,13 +31,13 @@ class PhotosController < ApplicationController
       #TODO spostare fuori in una funzione meglio definita
       @photo = find_photo(word)
 
-      if @photo["total_results"] < 5
-
+      if @photo["total_results"] < 20
+        puts @photo["total_results"].to_s
       else
-
         k=0;
-        while k < 5
+        while k < 15
           @photourl.push(@photo["photos"][k]["src"]["medium"])
+          # puts @photourl.length.to_s
           k += 1
         end
         i += 1
