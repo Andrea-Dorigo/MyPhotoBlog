@@ -1,31 +1,23 @@
 <h1>Photo Blog</h1>
 
+
+<p>  <%= @word %></p>
+
 <ul class="random_words_list">
   <% @words_array.each do |word| %>
     <%= content_tag :li, class: "random_word" do -%>
-      <% word %>
+    <!-- TODO: should I move this "logic" somewhere else? -->
+      <%= link_to word, url_for(word: word, words_array: @words_array) %>
     <% end -%>
   <% end %>
 </ul>
 
-<div id="photo-gallery">
-<!--could I use "each"? Is it better? -->
-<!--maybe a 2-dimensional array can make loops clearer -->
-  <% for i in 0..7 do %>
-    <%= content_tag :div, class: ["js-flickity", "carousel"], data: { flickity:  { "autoPlay": 4000,
-                 "wrapAround": true,
-                 "draggable": false
-               } } do -%>
 
-                 <% for j in 0..4 do %>
-                   <%= image_tag @photourl.last , :class => 'carousel-cell' %>
-                   <% @photourl.pop %>
-                 <% end %>
+<!-- <div id="photo-gallery">
+<!--could I use "each"? Is it better?
+<!--maybe a 2-dimensional array can make loops clearer
 
-    <% end %>
-  <% end %>
-
-</div>
+</div> -->
 
 <h2>Add a comment</h2>
 

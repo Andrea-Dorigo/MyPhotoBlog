@@ -1,5 +1,10 @@
 class Comment < ApplicationRecord
 
-  validates  :name, presence: true
+  validates  :name, :email, :body, presence: true
 
+
+
+  def funny_name
+
+  end
 end
