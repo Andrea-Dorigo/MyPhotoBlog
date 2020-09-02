@@ -1,6 +1,5 @@
 /* TODO: learn SCSS and SASS and update the stylesheet */
 /* TODO: substitute css variables where it"s useful (now that I finally CAN use variables) */
-
 * {
   margin:0;
   padding:0;
@@ -10,23 +9,40 @@ h1 {
   font: 200 3em 'Poppins', sans-serif;
   text-align: center;
   margin: 1em auto 1em;
+  color: #777;
 }
-
 ul.random_words_list {
   display: flex;
-  justify-content: center;
   align-items: center;
+  max-width: 650px;
+  margin: 3.5em auto 3.5em auto;
+  justify-content: space-between;
 }
 li.random_word {
   list-style-type: none;
-  width: 10em;
+  width: 8.5em;
   text-align: center;
   display: block;
   border: 1px solid #aaa;
-  border-radius: 5px;
+  border-radius: 7px;
   padding: 0.2em;
-  margin: 1.5em;
-
+  font-size: 1.2em;
+  transition: 0.2s ease;
+}
+li.random_word:hover {
+  background-color: rgba(255,59,142,0.65);
+  border:none;
+  border: 1px solid #ff9cc6;
+  transition: 0.2s ease;
+}
+li.random_word.selected {
+  background-color: #ff3b8e;
+  border:none;
+}
+li.random_word.selected a, li.random_word:hover a {
+  color: #fff;
+  font-weight: bold;
+  transition: 0.2s ease;
 }
 li.random_word a {
   display: block;
@@ -58,17 +74,17 @@ li.random_word a {
 }
 
 /* assigns blocks to grid areas */
-.carousel:nth-child(1) {grid-area: block-A1 ;}
-.carousel:nth-child(2) {grid-area: block-A2 ;}
-.carousel:nth-child(3) {grid-area: block-A3 ;}
-.carousel:nth-child(4) {grid-area: block-B1 ;}
-.carousel:nth-child(5) {grid-area: block-B2 ;}
-.carousel:nth-child(6) {grid-area: block-C1 ;}
-.carousel:nth-child(7) {grid-area: block-C2 ;}
-.carousel:nth-child(8) {grid-area: block-V  ;}
+.main-carousel:nth-child(1) {grid-area: block-A1 ;}
+.main-carousel:nth-child(2) {grid-area: block-A2 ;}
+.main-carousel:nth-child(3) {grid-area: block-A3 ;}
+.main-carousel:nth-child(4) {grid-area: block-B1 ;}
+.main-carousel:nth-child(5) {grid-area: block-B2 ;}
+.main-carousel:nth-child(6) {grid-area: block-C1 ;}
+.main-carousel:nth-child(7) {grid-area: block-C2 ;}
+.main-carousel:nth-child(8) {grid-area: block-V  ;}
 
 /* flickity selectors */
-.carousel {
+.main-carousel {
   width: 100%;
   height: 100%;
   border-radius: 6px;
@@ -80,10 +96,66 @@ li.random_word a {
   height: 100%;
   width: 100%;
   border-radius: 6px;
+  transition: transform 0.3s ease;
 }
 .carousel-cell:hover {
   transform: scale(1.1);
+  transition: transform 0.3s ease;
 }
-.flickity-page-dots, .flickity-button {
-  display: none;
+
+.flickity-page-dots, .flickity-button {display: none;}
+/* Add Comment Form */
+
+#add_comment_form {
+  max-width: 650px;
+  margin: 3.5em auto 3.5em auto;
+}
+#add_comment_form fieldset {
+  border: none;
+}
+#add_comment_form fieldset * {
+  border: 1px solid #999;
+  border-radius: 4px;
+  font-size: 1.2em;
+  padding: 0.8em;
+  box-sizing: border-box;
+}
+#add_comment_form fieldset *::placeholder {
+  color: #333;
+}
+#add_comment_form fieldset legend {
+  font: 200 2.4em 'Poppins', sans-serif;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 1.2em;
+  border: none;
+  padding: 0;
+  color: #777;
+}
+#add_comment_form fieldset #comment_name {
+  width: 48%;
+}
+#add_comment_form fieldset #comment_email {
+  width: 48%;
+  float: right;
+}
+#add_comment_form fieldset #comment_body {
+  width: 100%;
+  height: 8em;
+  margin:1em auto 2em auto;
+}
+#add_comment_form fieldset #comment_body {
+  width: 100%;
+  height: 8em;
+  margin:1em auto 2em auto;
+}
+#add_comment_form fieldset #comment_submit {
+  font: 600 1.3em 'Poppins', sans-serif;
+  display: block;
+  margin:0 auto 2em auto;
+  background-color: #58b7d9;
+  padding: 0.5em 3em 0.5em 3em;
+  color: #fff;
+  border:none;
+  letter-spacing: 0.07em;
 }

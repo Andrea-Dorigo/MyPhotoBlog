@@ -1,42 +1,53 @@
 <h1>Photo Blog</h1>
 
-
-<p>  <%= @word %></p>
-
 <ul class="random_words_list">
-  <% @words_array.each do |word| %>
-    <%= content_tag :li, class: "random_word" do -%>
-    <!-- TODO: should I move this "logic" somewhere else? -->
-      <%= link_to word, url_for(word: word, words_array: @words_array) %>
-    <% end -%>
+  <% for i in 0..2 %>
+    <!-- <p>  <%= i %></p>
+    <p>  <%= @word %></p> -->
+    <% if @word.to_i == i.to_i %>
+      <%= content_tag :li, class: ["random_word","selected"] do -%>
+      <!-- TODO: should I move this "logic" somewhere else? -->
+        <%= link_to @words_array[i], url_for(word: i, words_array: @words_array), { data: { turbolinks: "false" } } %>
+      <% end -%>
+    <% else %>
+      <%= content_tag :li, class: "random_word" do -%>
+      <!-- TODO: should I move this "logic" somewhere else? -->
+        <%= link_to @words_array[i], url_for(word: i, words_array: @words_array), { data: { turbolinks: "false" } } %>
+      <% end -%>
+    <% end %>
   <% end %>
 </ul>
 
+<div id="photo-gallery">
+<!--could I use "each"? Is it better? -->
+<!--maybe a 2-dimensional array can make loops clearer -->
+  <% for i in 0..7 do %>
+    <%= content_tag :div, class: ["js-flickity", "main-carousel"], data: { flickity:  { "autoPlay": 4000,
+                 "wrapAround": true,
+                 "draggable": false
+               } } do -%>
 
-<!-- <div id="photo-gallery">
-<!--could I use "each"? Is it better?
-<!--maybe a 2-dimensional array can make loops clearer
+     <% 5.times do %>
+       <%= image_tag "https://designshack.net/wp-content/uploads/placeholder-image.png" , :class => 'carousel-cell' %>
+       <%# <%= image_tag @photourl[@photo_url_index] , :class => 'carousel-cell' %>
+       <% @photo_url_index += 1 %>
+     <% end %>
+    <% end %>
+  <% end %>
 
-</div> -->
+</div>
+<!-- <h2>Add a comment</h2> -->
 
-<h2>Add a comment</h2>
+<%= form_for :comment,  :html => {:id => "add_comment_form"}, url: comments_path do |f| %>
+  <fieldset>
+    <legend class="form_title">Add a Comment</legend>
 
-<%= form_for :comment, url: comments_path do |f| %>
-  <p>
-      <%= f.label :name %><br>
-      <%= f.text_field(:name) %>
-  </p>
-  <p>
-      <%= f.label :email %><br>
-      <%= f.text_field(:email) %>
-  </p>
-  <p>
-      <%= f.label :body %><br>
-      <%= f.text_area(:body) %>
-  </p>
-  <p>
-      <%= f.submit %>
-  </p>
+      <%=f.text_field(:name,  placeholder: 'Name')%>
+      <%=f.text_field(:email,  placeholder: 'Email address')%>
+      <%=f.text_area(:body,  placeholder: 'Your Comment')%>
+      <%=f.submit(:id => "comment_submit", :value => "Add this comment") %>
+
+  </fieldset>
 <% end %>
 <% @comments.each do |comment| %>
   <h3><%= comment.name %></h3>

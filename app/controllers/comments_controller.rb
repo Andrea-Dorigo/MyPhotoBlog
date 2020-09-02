@@ -13,7 +13,7 @@ class CommentsController < ApplicationController
     # render plain: params[:comment].inspect
     @comment.save!
     # @word = "another"
-    redirect_to home_url
+    redirect_to home_url, data: { no_turbolink: true } and return
   end
 
   private def comment_params

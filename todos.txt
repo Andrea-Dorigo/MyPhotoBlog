@@ -8,6 +8,8 @@ Advised:
    - Better loops
    - Make the app faster
    - Better error handling
+   - Pass the photo urls when a word is clicked
 Optional:
    - Add options to edit or remove a comment
    - Fetch optimised photos
+   
