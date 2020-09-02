@@ -28,8 +28,8 @@
                } } do -%>
 
      <% 5.times do %>
-       <%= image_tag "https://designshack.net/wp-content/uploads/placeholder-image.png" , :class => 'carousel-cell' %>
-       <%# <%= image_tag @photourl[@photo_url_index] , :class => 'carousel-cell' %>
+       <%# <%= image_tag "https://designshack.net/wp-content/uploads/placeholder-image.png" , :class => 'carousel-cell' %>
+       <%= image_tag @photourl[@photo_url_index.to_i] , :class => 'carousel-cell' %>
        <% @photo_url_index += 1 %>
      <% end %>
     <% end %>

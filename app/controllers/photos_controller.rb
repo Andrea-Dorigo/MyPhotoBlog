@@ -7,11 +7,12 @@ class PhotosController < ApplicationController
     #change how the words_array is passed (string split parsing)
     @words_array = params[:words_array] || []
 
-    getPhotos
-    #TODO: is @ necessary?
     @word = params[:word] || 1
     @comments = Comment.all
-    puts @word
+
+    getPhotos
+    #TODO: is @ necessary?
+
   end
 
   # def show
@@ -25,11 +26,11 @@ class PhotosController < ApplicationController
     puts @photo_url_index.to_s
     #TODO: si potrebbe aggiungere il controllo per evitare duplicati, pur restando un'evenienza molto rara
     i = 0
-    k = 0
+    k = 0 #not needed
     # TODO: migliorare entrambi i cicli, renderli piu' efficienti e piu' comprensiili
     # TODO: si potrebbe fare in modo che l'array degli url delle foto sia passato al click di una word
     if @words_array == []
-
+      @photo_url_index = 40
       puts "empty words array"
       url = "https://www.randomlists.com/data/words.json"
       doc = HTTParty.get(url)
@@ -37,17 +38,23 @@ class PhotosController < ApplicationController
 
       while i < 3
         word = parsed["data"].sample
-        # if search_photos(word)
+        if search_photos(word)
           @words_array.push(word)
           i += 1
-        # end
+        end
       end
+
     else
+      c = @word.to_i*40 #not necessary
+      @photo_url_index = c.to_i
+
       for i in 0..2
         word = @words_array[i]
-        # search_photos(word)
+        search_photos(word)
       end
-      # @photo_url_index = 80
+
+
+
     end
       # @words_array.push(parsed["data"].sample)
       # puts i.to_s
