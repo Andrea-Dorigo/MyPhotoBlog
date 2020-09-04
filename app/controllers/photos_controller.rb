@@ -38,10 +38,10 @@ class PhotosController < ApplicationController
 
       while i < 3
         word = parsed["data"].sample
-        if search_photos(word)
+        # if search_photos(word)
           @words_array.push(word)
           i += 1
-        end
+        # end
       end
 
     else
@@ -50,7 +50,7 @@ class PhotosController < ApplicationController
 
       for i in 0..2
         word = @words_array[i]
-        search_photos(word)
+        # search_photos(word)
       end
 
 
@@ -97,13 +97,17 @@ class PhotosController < ApplicationController
   end
 
     def request_api(url)
+      #TODO: implement exception handling ?
+      pexels_key = ENV.fetch('PEXELS_API_KEY')
+      if pexels_key.nil?
+        pexels_key = ENV["PEXELS_API_KEY"]
+      end
 
       response = Excon.get(
         url,
         headers: {
           # 'Authorization' => ENV.fetch('PEXELS_API_KEY')
-          'Authorization' => ENV["PEXELS_API_KEY"]
-          # 'Authorization' => '563492ad6f917000010000012fdc3c81638f48b2a3a31e02d07b3f3c'
+          'Authorization' => pexels_key
         }
       )
       return nil if response.status != 200
