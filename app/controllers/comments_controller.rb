@@ -1,18 +1,21 @@
 class CommentsController < ApplicationController
 
-  def show
-    # check if the @ is necessary
-    @comment = Comment.find(params[:id])
-  end
-
-
+  # def show
+  #   # check if the @ is necessary
+  #   comment = Comment.find(params[:id])
+  # end
 
   def create
-
-    @comment = Comment.new(comment_params)
-    # render plain: params[:comment].inspect
-    @comment.save!
-    # @word = "another"
+    begin
+      comment = Comment.new(comment_params)
+      # render plain: params[:comment].inspect
+      comment.save!
+    rescue
+      puts "rescued"
+      #TODO: should pass with a parameter instead of hardcoding a string
+      #TESTING
+      redirect_to home_url + "?error=invalidpost", data: { no_turbolink: true } and return
+    end
     redirect_to home_url, data: { no_turbolink: true } and return
   end
 

@@ -182,3 +182,7 @@ li.random_word a {
   width: 100%;
   margin-top: 1.2em;
 }
+.error-message {
+  background-color: #fec4c1; 
+  color: #e7574e;
+}

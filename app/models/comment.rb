@@ -4,7 +4,7 @@ class Comment < ApplicationRecord
 
 
 
-  def funny_name
-
-  end
+  # def funny_name
+  #
+  # end
 end

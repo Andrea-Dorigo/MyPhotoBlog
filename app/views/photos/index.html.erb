@@ -2,8 +2,6 @@
 
 <ul class="random_words_list">
   <% for i in 0..2 %>
-    <!-- <p>  <%= i %></p>
-    <p>  <%= @word %></p> -->
     <% if @word.to_i == i.to_i %>
       <!-- TODO: should I move this "logic" somewhere else? -->
       <%= content_tag :li, class: ["random_word","selected"] do -%>
@@ -38,14 +36,17 @@
 </div>
 <!-- <h2>Add a comment</h2> -->
 
-<%= form_for :comment,  :html => {:id => "add_comment_form"}, url: comments_path do |f| %>
+
+<%= form_for :comment,  :html => {:id => "add_comment_form"}, url: comments_path do |c| %>
+  <% if @errortype == "invalidpost" %>
+    <%= tag.p 'Could not post your comment. Name, email and comment are required', class: "error-message" %>
+  <% end %>
   <fieldset>
     <legend class="form_title"><h2>Add a Comment</h2></legend>
-      <%=f.text_field(:name,  placeholder: 'Name')%>
-      <%=f.text_field(:email,  placeholder: 'Email address')%>
-      <%=f.text_area(:body,  placeholder: 'Your Comment')%>
-      <%=f.submit(:id => "comment_submit", :value => "Add this comment") %>
-
+      <%=c.text_field(:name,  placeholder: 'Name')%>
+      <%=c.text_field(:email,  placeholder: 'Email address')%>
+      <%=c.text_area(:body,  placeholder: 'Your Comment')%>
+      <%=c.submit(:id => "comment_submit", :value => "Add this comment") %>
   </fieldset>
 <% end %>
 <%= tag.ul class: "comment_list" do %>
