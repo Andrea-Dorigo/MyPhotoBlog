@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
       root 'photos#index', as: 'home'
 
+      post '/comments', to: 'photos#create_comment'
 
       resources :comments
 end

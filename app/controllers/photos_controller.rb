@@ -3,7 +3,7 @@ class PhotosController < ApplicationController
   include HTTParty
 
   def index
-
+    @comment = Comment.new
     #change how the words_array is passed (string split parsing)
     @words_array = params[:words_array] || []
     @word = params[:word] || 1
@@ -57,6 +57,19 @@ class PhotosController < ApplicationController
   #   @photourl = @photo["photos"].first["src"]["medium"]
   #
   # end
+  def create_comment
+    begin
+      comment = Comment.new(params.require(:comment).permit(:name, :email, :body))
+      comment.save!
+      if params[:remember_me]
+        cookies[:name] = comment.name;
+        cookies[:email] = comment.email;
+      end
+    rescue
+      error = "?error=invalidpost#add_comment_form"
+    end
+    redirect_to home_url + error, data: { no_turbolink: true } and return
+  end
 
   def search_photos(word)
     # TODO: use pexels ruby methods
@@ -65,9 +78,7 @@ class PhotosController < ApplicationController
     if photo["total_results"] >= 40
       k=0;
       while k < 40
-        # puts @photo["photos"][k]["src"]["medium"].to_s
         @photourl.push(photo["photos"][k]["src"]["medium"])
-        # puts @photourl.length.to_s
         k += 1
       end
       response = true

@@ -1,0 +1,22 @@
+
+
+<%= form_for @comment,  :html => {:id => "add_comment_form"}, url:{ action: "create_comment" } do |c| %>
+  <% if @errortype == "invalidpost" %>
+    <%= tag.p 'Could not post your comment. Name, Email and Comment are required', id:"form-error", class: "error-message" %>
+  <% end %>
+  <fieldset>
+    <legend class="form_title"><h2>Add a Comment</h2></legend>
+      <!--TODO: si potrebbe eevidenziare in rosso i campi non inseriti-->
+      <%= c.text_field(:name,  placeholder: 'Name', value: cookies[:name])%>
+      <%= c.text_field(:email,  placeholder: 'Email address', value: cookies[:email])%>
+      <%= c.text_area(:body,  placeholder: 'Your Comment')%>
+      <!-- <div class="custom-checkbox"> -->
+        <%= check_box_tag(:remember_me, 0,true) %>
+        <%= label_tag(:remember_me, "Remember me") %>
+      <!-- </div> -->
+      <%= c.submit(:id => "comment_submit", :value => "Add this comment") %>
+  </fieldset>
+  <% if cookies[:name].nil? %>
+    <%= tag.p "This site uses technical cookies to remember your Name and Email.", class: "cookie_notice" %>
+  <% end %>
+<% end %>
