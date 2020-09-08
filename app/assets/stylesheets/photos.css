@@ -160,7 +160,7 @@ li.random_word a {
 #add_comment_form fieldset #comment_submit {
   font: 600 1.3em 'Poppins', sans-serif;
   display: block;
-  margin:2em auto 2em auto;
+  margin:1em auto 2em auto;
   background-color: #58b7d9;
   padding: 0.5em 3em 0.5em 3em;
   color: #fff;
@@ -181,9 +181,7 @@ li.random_word a {
 }
 #add_comment_form #remember_me {
   opacity: 0;
-  position: relative;
-  left: 0;
-  top:0;
+  position: absolute;
 }
 #add_comment_form label {
   border:none;
@@ -193,37 +191,33 @@ li.random_word a {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-left: 1.5em;
+  padding-right: 0em;
+  padding-left: 0.6em;
   position: relative;
   margin-right: auto;
   margin-left: auto;
   width: 210px;
   user-select: none;
 }
-#add_comment_form label::before{
-  content: " ";
-  border: 1px solid #999;
-  border-radius: 5px;
-  width: 0.9em;
-  height: 0.9em;
+#add_comment_form label::before, #add_comment_form label::after{
+  font-size: 1.2em;
+  font-family: 'Material Icons';
   display: inline-block;
   margin-right: 0.7em;
   position: absolute;
   left: 0;
+  color: #58b7d9
 }
-#add_comment_form label::after{
-  content: " ";
-  border: 1px solid #58b7d9;
-  border-radius: 5px;
-  width: 0.9em;
-  height: 0.9em;
-  display: inline-block;
-  /* margin-right: 0.7em; */
-  background-color: #58b7d9;
-  position: absolute;
-  left: 0;
+#add_comment_form label::before{
+  content: "check_box_outline_blank";
 }
-
+/*Hide the checkmark by default*/
+#add_comment_form input[type="checkbox"] + label::after {
+  content: none;
+}/*Unhide the checkmark on the checked state*/
+#add_comment_form input[type="checkbox"]:checked + label::after {
+  content: "check_box";
+}
 
 .comment_list {
   max-width: 650px;
@@ -273,10 +267,3 @@ li.random_word a {
 /* input[type=checkbox] {
   visibility: hidden;
 }3 */
-/*Hide the checkmark by default*/
-#add_comment_form input[type="checkbox"] + label::after {
-    content: none;
-}/*Unhide the checkmark on the checked state*/
-#add_comment_form input[type="checkbox"]:checked + label::after {
-    content: "";
-}

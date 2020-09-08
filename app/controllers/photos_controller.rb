@@ -32,10 +32,10 @@ class PhotosController < ApplicationController
       i = 0
       while i < 3
         word = parsed["data"].sample
-        if search_photos(word)
+        # if search_photos(word)
           @words_array.push(word)
           i += 1
-        end
+        # end
       end
 
     else
@@ -44,7 +44,7 @@ class PhotosController < ApplicationController
 
       for i in 0..2
         word = @words_array[i]
-        search_photos(word)
+        # search_photos(word)
       end
 
     end
