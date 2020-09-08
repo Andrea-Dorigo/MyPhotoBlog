@@ -6,7 +6,7 @@
       <!-- TODO: should I move this "logic" somewhere else? -->
       <%= content_tag :li, class: ["random_word","selected"] do -%>
         <%= link_to @words_array[i], url_for(word: i, words_array: @words_array), { data: { turbolinks: "false" } } %>
-        <!-- TODO: should be a <p> and not an <a> (because you already are in the correct page)-->
+        <!-- TODO: this above tag should be a <p> and not an <a> (because you already are in the correct page)-->
       <% end -%>
     <% else %>
       <%= content_tag :li, class: "random_word" do -%>
@@ -43,8 +43,8 @@
   <% end %>
   <fieldset>
     <legend class="form_title"><h2>Add a Comment</h2></legend>
-      <%=c.text_field(:name,  placeholder: 'Name')%>
-      <%=c.text_field(:email,  placeholder: 'Email address')%>
+      <%=c.text_field(:name,  placeholder: 'Name', value: cookies[:name])%>
+      <%=c.text_field(:email,  placeholder: 'Email address', value: cookies[:email])%>
       <%=c.text_area(:body,  placeholder: 'Your Comment')%>
       <%=c.submit(:id => "comment_submit", :value => "Add this comment") %>
   </fieldset>

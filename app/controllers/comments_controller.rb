@@ -10,6 +10,8 @@ class CommentsController < ApplicationController
       comment = Comment.new(comment_params)
       # render plain: params[:comment].inspect
       comment.save!
+      cookies[:name] = comment.name;
+      cookies[:email] = comment.email;
     rescue
       puts "rescued"
       #TODO: should pass with a parameter instead of hardcoding a string

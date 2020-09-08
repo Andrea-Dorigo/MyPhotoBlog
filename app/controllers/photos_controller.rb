@@ -12,6 +12,7 @@ class PhotosController < ApplicationController
     # puts "ERROR = " + @errortype.to_s
     getPhotos
     #TODO: is @ necessary?
+    puts "comment name " + cookies[:name]
   end
 
   def getPhotos
@@ -57,7 +58,6 @@ class PhotosController < ApplicationController
   #
   # end
 
-
   def search_photos(word)
     # TODO: use pexels ruby methods
     photo = request_api("https://api.pexels.com/v1/search?query=" + word + "&per_page=40")
@@ -76,23 +76,23 @@ class PhotosController < ApplicationController
     end
   end
 
-    def request_api(url)
-      #TODO: implement exception handling ?
-      pexels_key = ENV.fetch('PEXELS_API_KEY')
-      if pexels_key.nil?
-        pexels_key = ENV["PEXELS_API_KEY"]
-      end
-
-      response = Excon.get(
-        url,
-        headers: {
-          # 'Authorization' => ENV.fetch('PEXELS_API_KEY')
-          'Authorization' => pexels_key
-        }
-      )
-      return nil if response.status != 200
-      JSON.parse(response.body)
-
+  def request_api(url)
+    #TODO: implement exception handling ?
+    pexels_key = ENV.fetch('PEXELS_API_KEY')
+    if pexels_key.nil?
+      pexels_key = ENV["PEXELS_API_KEY"]
     end
+
+    response = Excon.get(
+      url,
+      headers: {
+        # 'Authorization' => ENV.fetch('PEXELS_API_KEY')
+        'Authorization' => pexels_key
+      }
+    )
+    return nil if response.status != 200
+    JSON.parse(response.body)
+
+  end
 
 end
