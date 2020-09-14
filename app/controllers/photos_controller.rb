@@ -12,7 +12,7 @@ class PhotosController < ApplicationController
     @comment = Comment.new
     @comments = Comment.all
 
-    @selected = params['selected'].to_i || 1 
+    @selected = params['selected'].to_i || 1
     puts "DEBUG>>>> SELECTED = " + @selected.to_s
 
     getPhotos
@@ -45,18 +45,49 @@ class PhotosController < ApplicationController
           end
           i += 1
         end
+
+        puts "PHOTOURL>>>     #{@photourl}"
         puts "DEBUG>>> PHOTO ARRAY WAS EMPTY, NOW IS: #{@words_array.to_s}"
+
 
       end
       puts "DEBUG>>> REDIRECTING"
+
+      # https://images.pexels.com/photos/3810754/pexels-photo-3810754.jpeg?auto=compress&cs=tinysrgb&h=350
+      # https://images.pexels.com/photos/3178818/pexels-photo-3178818.jpeg?auto=compress&cs=tinysrgb&h=350
+
+      keywords = params['words'] ? params['words'].split("|") : []
+
+      cookies[:photo_url_array] = nil
+      photourlarray = []
+      @photourl.each do |url|
+        # puts "#{url}" + "\n"
+        photo_id = url.split("/")
+        photourlarray.push(photo_id[4])
+        # teststring  += "#{@photourl[j]}" +"\n"
+      end
+      cookies[:photo_url_array] = photourlarray
+      # session[:photo_url_array] = @photourl
+
       redirect_to(home_url + "?selected=1&words="+@words_string)
     else
       # @photo_url_index = @selected.to_i * 40
       puts "DEBUG>>> PHOTO ARRAY: #{@words_array}"
       @photo_url_index = @selected *40
+
+      # @photourl = cookies[:photo_url_array]
+      # puts "DEBUG PHOTOURL>>> #{@photourl}"
+      string = "#{cookies[:photo_url_array]}"
+      splitted = string.split("&")
+      @photourl = []
+      splitted.each do |s|
+        @photourl.push("https://images.pexels.com/photos/#{s}/pexels-photo-#{s}.jpeg?auto=compress&cs=tinysrgb&h=350")
+      end
+      puts @photourl.to_s
+
       for i in 0..2
         word = @words_array[i]
-        search_photos(word)
+        # search_photos(word)
         @words_string += "#{word}"
         if i < 2
           @words_string += "|"
@@ -74,7 +105,7 @@ class PhotosController < ApplicationController
     @words_array = keywords
     saved = @comment.save
     @comments = Comment.all
-    @selected = params['selected'].to_i || 1 
+    @selected = params['selected'].to_i || 1
     getPhotos
 
     if saved
@@ -95,11 +126,13 @@ class PhotosController < ApplicationController
     # TODO: use pexels ruby methods
     photo = request_api("https://api.pexels.com/v1/search?query=#{selected}&per_page=40")
     # puts "DEBUG>>> #{photo}"
-    if photo["total_results"] >= 40
+    if photo["total_results"] >= 45
       k=0
       while k < 40
-        @photourl.push(photo["photos"][k]["src"]["medium"])
-        k += 1
+        # if photo["photos"][k]["src"]["medium"].include? "/pexels-photo-"
+          @photourl.push(photo["photos"][k]["src"]["medium"])
+          k += 1
+        # end
       end
       response = true
     else
@@ -110,7 +143,7 @@ class PhotosController < ApplicationController
   def request_api(url)
     #TODO: implement exception handling ?
     pexels_key = ENV.fetch('PEXELS_API_KEY')
-    
+
     response = Excon.get(url, headers: {'Authorization' => pexels_key } )
     return nil if response.status != 200
     JSON.parse(response.body)
