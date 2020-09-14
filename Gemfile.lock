@@ -76,6 +76,10 @@ GEM
     childprocess (3.0.0)
     concurrent-ruby (1.1.7)
     crass (1.0.6)
+    dotenv (2.7.6)
+    dotenv-rails (2.7.6)
+      dotenv (= 2.7.6)
+      railties (>= 3.2)
     erubi (1.9.0)
     excon (0.76.0)
     ffi (1.13.1)
@@ -198,9 +202,6 @@ GEM
     thread_safe (0.3.6)
     thread_safe (0.3.6-java)
     tilt (2.0.10)
-    turbolinks (5.2.1)
-      turbolinks-source (~> 5.2)
-    turbolinks-source (5.2.0)
     tzinfo (1.2.7)
       thread_safe (~> 0.1)
     tzinfo-data (1.2020.1)
@@ -238,6 +239,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
   capybara (>= 2.15)
+  dotenv-rails
   excon
   httparty (~> 0.18.1)
   jbuilder (~> 2.7)
@@ -249,7 +251,6 @@ DEPENDENCIES
   selenium-webdriver
   spring
   spring-watcher-listen (~> 2.0.0)
-  turbolinks (~> 5)
   tzinfo-data
   web-console (>= 3.3.0)
   webdrivers
