@@ -38,7 +38,7 @@ li.random_word:hover {
 }
 li.random_word.selected {
   background-color: #ff3b8e;
-  border:none;
+  border: 1px solid #ff3b8e;
 }
 li.random_word.selected a, li.random_word:hover a {
   color: #fff;
@@ -259,11 +259,8 @@ li.random_word a {
   margin-bottom: 2em;
   margin-top: 1em;
 }
-/* #add_comment_form .custom-checkbox {
-  border: none;
-  position: rela
-} */
 
-/* input[type=checkbox] {
-  visibility: hidden;
-}3 */
+#add_comment_form fieldset .wrong-field{
+  box-shadow: 0 0 0pt 1pt #fec4c1;
+  border: 1px solid #e7574e;
+}

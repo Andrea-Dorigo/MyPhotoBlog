@@ -1,24 +1,26 @@
-<h1>Photo Blog</h1>
 
+<h1>Photo Blog</h1>
+<% puts "#{@photo_url_index}" %>
+<% puts "#{@selected}" %>
 <ul class="random_words_list">
   <% for i in 0..2 %>
-    <% if @word.to_i == i.to_i %>
+    <% if @selected.to_i == i %>
       <!-- TODO: should I move this "logic" somewhere else? -->
       <%= content_tag :li, class: ["random_word","selected"] do -%>
-        <%= link_to @words_array[i], url_for(word: i, words_array: @words_array), { data: { turbolinks: "false" } } %>
+        <%= link_to @words_array[i], home_url(words: @words_string, selected: i), { data: { turbolinks: "false" } } %>
         <!-- TODO: this above tag should be a <p> and not an <a> (because you already are in the correct page)-->
       <% end -%>
     <% else %>
       <%= content_tag :li, class: "random_word" do -%>
-        <%= link_to @words_array[i], url_for(word: i, words_array: @words_array), { data: { turbolinks: "false" } } %>
+        <%= link_to @words_array[i], home_url(words: @words_string, selected: i), { data: { turbolinks: "false" } } %>
       <% end -%>
     <% end %>
   <% end %>
 </ul>
 
 <div id="photo-gallery">
-<!--could I use "each"? Is it better? -->
-<!--maybe a 2-dimensional array can make loops clearer -->
+<!--TODO could I use "each"? Is it better? -->
+<!--TODO maybe a 2-dimensional array can make loops clearer -->
   <% for i in 0..7 do %>
     <%= content_tag :div, class: ["js-flickity", "main-carousel"], data: { flickity:  { "autoPlay": 4000,
                  "wrapAround": true,
@@ -26,20 +28,19 @@
                } } do -%>
 
      <% 5.times do %>
-       <%= image_tag "https://designshack.net/wp-content/uploads/placeholder-image.png" , :class => 'carousel-cell' %>
-       <%#<%= image_tag @photourl[@photo_url_index.to_i] , :class => 'carousel-cell' %>
+       <%# <%= image_tag "https://designshack.net/wp-content/uploads/placeholder-image.png" , :class => 'carousel-cell' %> 
+       <%= image_tag @photourl[@photo_url_index.to_i] , :class => 'carousel-cell' %>
        <% @photo_url_index += 1 %>
      <% end %>
-    <% end %>
+    <% end -%>
   <% end %>
 
 </div>
 
-
-<%= render "add_comment_form" %>
+<%= render partial: "add_comment_form" , locals: {comment: @comment, words_array: @words_array}%>
 
 <%= tag.ul class: "comment_list" do %>
-  <%# sort comments from most recent to last? %>
+  <!--TODO: sort comments from most recent to last? -->
   <% @comments.each do |comment| %>
     <li class="comment_list_item">
       <h3 class="comment_name"><%= comment.name %></h3>

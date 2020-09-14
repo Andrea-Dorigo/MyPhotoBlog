@@ -3,7 +3,10 @@ Rails.application.routes.draw do
 
       root 'photos#index', as: 'home'
 
-      post '/comments', to: 'photos#create_comment'
+      post '/', to: 'photos#create_comment'
+      patch '/', to: 'photos#create_comment'
+
+      # get '/comments/new', to: 'photos#new_comment'
 
       resources :comments
 end
