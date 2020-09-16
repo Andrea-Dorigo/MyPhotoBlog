@@ -46,27 +46,38 @@ class PhotosController < ApplicationController
           i += 1
         end
 
-        puts "PHOTOURL>>>     #{@photourl}"
-        puts "DEBUG>>> PHOTO ARRAY WAS EMPTY, NOW IS: #{@words_array.to_s}"
+        # puts "PHOTOURL>>>     #{@photourl}"
+        puts "DEBUG>>> CREATING PHOTO ARRAY: #{@words_array.to_s}"
 
 
       end
-      puts "DEBUG>>> REDIRECTING"
+
+
+
+
+
+      # puts "DEBUG>>> REDIRECTING"
 
       # https://images.pexels.com/photos/3810754/pexels-photo-3810754.jpeg?auto=compress&cs=tinysrgb&h=350
       # https://images.pexels.com/photos/3178818/pexels-photo-3178818.jpeg?auto=compress&cs=tinysrgb&h=350
 
       keywords = params['words'] ? params['words'].split("|") : []
 
-      cookies[:photo_url_array] = nil
-      photourlarray = []
-      @photourl.each do |url|
-        # puts "#{url}" + "\n"
-        photo_id = url.split("/")
-        photourlarray.push(photo_id[4])
-        # teststring  += "#{@photourl[j]}" +"\n"
+      # cookies[:photo_url_array] = nil
+      # photourlarray = []
+      # @photourl.each do |url|
+      #   # puts "#{url}" + "\n"
+      #   photo_id = url.split("/")
+      #   photourlarray.push(photo_id[4])
+      #   # teststring  += "#{@photourl[j]}" +"\n"
+      # end
+      #cookies[:photo_url_array] = photourlarray
+      Rails.cache.fetch(:cached_urls, force: true, expires_in: 1.minutes) do
+        puts "miss"
+        @photourl
       end
-      cookies[:photo_url_array] = photourlarray
+      # puts "CACHED RESULTS 1 << #{cached_urls}"
+      #session[:photosession] = photourlarray
       # session[:photo_url_array] = @photourl
 
       redirect_to(home_url + "?selected=1&words="+@words_string)
@@ -77,13 +88,17 @@ class PhotosController < ApplicationController
 
       # @photourl = cookies[:photo_url_array]
       # puts "DEBUG PHOTOURL>>> #{@photourl}"
-      string = "#{cookies[:photo_url_array]}"
-      splitted = string.split("&")
-      @photourl = []
-      splitted.each do |s|
-        @photourl.push("https://images.pexels.com/photos/#{s}/pexels-photo-#{s}.jpeg?auto=compress&cs=tinysrgb&h=350")
-      end
-      puts @photourl.to_s
+      #string = "#{cookies[:photo_url_array]}"
+      #
+      # puts "CACHED RESULTS 2 << #{cached_urls}"
+
+      #puts "DEBUGGY SESSIONS >>>>>> #{:cached_result}"
+      #splitted = string.split("&")
+      #@photourl = []
+      #splitted.each do |s|
+      #  @photourl.push("https://images.pexels.com/photos/#{s}/pexels-photo-#{s}.jpeg?auto=compress&cs=tinysrgb&h=350")
+      #end
+
 
       for i in 0..2
         word = @words_array[i]
@@ -93,6 +108,16 @@ class PhotosController < ApplicationController
           @words_string += "|"
         end
       end
+      #TODO: rifare meglio!!!!! refractoring con search_photos
+      @photourl2 = Rails.cache.fetch(:cached_urls) {
+        @words_array.each do |w|
+          search_photos(w)
+        end
+        return @photourl
+      }
+      puts "DEBUG>>> PHOTO URL #{@photourl2}"
+      @photourl = @photourl2
+
     end
   end
 
@@ -123,6 +148,7 @@ class PhotosController < ApplicationController
 
 
   def search_photos(selected)
+    puts "CALLING API"
     # TODO: use pexels ruby methods
     photo = request_api("https://api.pexels.com/v1/search?query=#{selected}&per_page=40")
     # puts "DEBUG>>> #{photo}"
