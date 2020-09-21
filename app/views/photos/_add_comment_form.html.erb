@@ -1,5 +1,6 @@
 <!-- TODO: make the checkbox and the submit buttons more visible when navigating with keyboard       -->
-<%= form_for comment,  :html => {:id => "add_comment_form"}, url: request.fullpath do |c| %>
+<%# <% if @comment.errors.messages.keys.any? %>
+<%= form_for comment,  :html => {:id => "add_comment_form"}, url: "#{@comment.errors.messages.keys.any? ? request.fullpath : request.fullpath+"#form-error"}" do |c| %>
   <% if @comment.errors.messages.keys.any? %>
     <%= tag.p id:"form-error", class: "error-message" do %>
       Couldn't post the comment because the following required fields are missing:

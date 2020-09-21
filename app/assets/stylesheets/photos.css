@@ -119,15 +119,16 @@ li.random_word a {
   padding: 0.8em;
   box-sizing: border-box;
   outline: none;
+  transition: 0.25s ease;
 }
 #add_comment_form fieldset *::placeholder {
   color: #333;
   font-weight: 200;
 }
 #add_comment_form fieldset *:focus {
-  /* outline: 3px solid #58b7d9; */
   box-shadow: 0 0 0pt 1pt #58b7d9;
   border: 1px solid #58b7d9;
+  transition: 0.25s ease;
 }
 #add_comment_form fieldset legend {
   cursor: default;
@@ -168,6 +169,13 @@ li.random_word a {
   letter-spacing: 0.07em;
   cursor: pointer;
 }
+#add_comment_form fieldset #comment_submit:focus, #add_comment_form fieldset #comment_submit:hover{
+  background-color: white;
+  color:  #58b7d9;
+  box-shadow: 0 0 0pt 2pt #58b7d9;
+  text-decoration: underline;
+  transition: 0.25s ease;
+}
 #add_comment_form .cookie_notice {
   font-size: 0.9em;
   font-weight: 300;
@@ -198,15 +206,17 @@ li.random_word a {
   margin-left: auto;
   width: 210px;
   user-select: none;
+    transition: 0.25s ease;
 }
 #add_comment_form label::before, #add_comment_form label::after{
   font-size: 1.2em;
   font-family: 'Material Icons';
   display: inline-block;
   margin-right: 0.7em;
+  margin-left: 0.35em;
   position: absolute;
   left: 0;
-  color: #58b7d9
+  color: #58b7d9;
 }
 #add_comment_form label::before{
   content: "check_box_outline_blank";
@@ -217,6 +227,10 @@ li.random_word a {
 }/*Unhide the checkmark on the checked state*/
 #add_comment_form input[type="checkbox"]:checked + label::after {
   content: "check_box";
+}
+#add_comment_form input[type="checkbox"]:focus + label{
+  box-shadow: 0 0 0pt 2pt #58b7d9;
+  transition: 0.25s ease;
 }
 
 .comment_list {
@@ -263,4 +277,8 @@ li.random_word a {
 #add_comment_form fieldset .wrong-field{
   box-shadow: 0 0 0pt 1pt #fec4c1;
   border: 1px solid #e7574e;
+}
+::selection {
+  background-color: #ff3b8e;
+  color: white;
 }

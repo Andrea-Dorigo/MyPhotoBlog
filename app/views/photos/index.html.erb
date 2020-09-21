@@ -21,7 +21,7 @@
 <!--TODO could I use "each"? Is it better? -->
 <!--TODO maybe a 2-dimensional array can make loops clearer -->
   <% for i in 0..7 do %>
-    <%= content_tag :div, class: ["js-flickity", "main-carousel"], data: { flickity:  { "autoPlay": 4000,
+    <%= content_tag :div, class: ["js-flickity", "main-carousel"], tabindex: "-1", data: { flickity:  { "autoPlay": 4000,
                  "wrapAround": true,
                  "draggable": false
                } } do -%>
