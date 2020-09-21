@@ -16,9 +16,8 @@ class PhotosController < ApplicationController
     @selected = params['selected'].to_i || 1
     puts "DEBUG>>>> SELECTED = " + @selected.to_s
 
-    getPhotos
+    getPhotos #redirects if no @words_array is found
 
-    #TODO: is @ necessary?
   end
 
   def getPhotos
@@ -28,7 +27,6 @@ class PhotosController < ApplicationController
     #TODO: si potrebbe aggiungere il controllo per evitare duplicati, pur restando un'evenienza molto rara
     # TODO: migliorare entrambi i cicli, renderli piu' efficienti e piu' comprensiili
     # TODO: si potrebbe fare in modo che l'array degli url delle foto sia passato al click di una selected
-
 
     @words_string = ""
     if @words_array == []
@@ -46,88 +44,27 @@ class PhotosController < ApplicationController
           end
           i += 1
         end
-
-        # puts "PHOTOURL>>>     #{@photourl}"
-        puts "DEBUG>>> CREATING PHOTO ARRAY: #{@words_array.to_s}"
-
-
       end
-
-
-
-
-
-      # puts "DEBUG>>> REDIRECTING"
-
-      # https://images.pexels.com/photos/3810754/pexels-photo-3810754.jpeg?auto=compress&cs=tinysrgb&h=350
-      # https://images.pexels.com/photos/3178818/pexels-photo-3178818.jpeg?auto=compress&cs=tinysrgb&h=350
 
       keywords = params['words'] ? params['words'].split("|") : []
 
-      # cookies[:photo_url_array1] = nil
-      # photourlarray = []
-      # @photourl.each do |url|
-      #   # puts "#{url}" + "\n"
-      #   photo_id = url.split("/")
-      #   photourlarray.push(photo_id[4])
-      #   # teststring  += "#{@photourl[j]}" +"\n"
-      # end
-      #cookies[:photo_url_array1] = photourlarray
-
       session[:photourltest] = @photourl
       puts "SESSION 1 >>>>>> #{session[:photourltest]}"
-      # Rails.cache.fetch(:cached_urls, force: true, expires_in: 1.hours) do
-      #   puts "miss"
-      #   @photourl
-      # end
-
-
-
-      # puts "CACHED RESULTS 1 << #{cached_urls}"
-      #session[:photosession] = photourlarray
-      # session[:photo_url_array1] = @photourl
 
       redirect_to(home_url + "?selected=1&words="+@words_string)
+      # TODO: refractoring: questo redirect non e' bene che sia qui.
     else
-      # @photo_url_index = @selected.to_i * 40
       puts "DEBUG>>> PHOTO ARRAY: #{@words_array}"
       @photo_url_index = @selected *40
 
-      # @photourl = cookies[:photo_url_array1]
-      # puts "DEBUG PHOTOURL>>> #{@photourl}"
-      #string = "#{cookies[:photo_url_array1]}"
-      #
-      # puts "CACHED RESULTS 2 << #{cached_urls}"
-
-      #puts "DEBUGGY SESSIONS >>>>>> #{:cached_result}"
-      #splitted = string.split("&")
-      #@photourl = []
-      #splitted.each do |s|
-      #  @photourl.push("https://images.pexels.com/photos/#{s}/pexels-photo-#{s}.jpeg?auto=compress&cs=tinysrgb&h=350")
-      #end
-
-
       for i in 0..2
         word = @words_array[i]
-        # search_photos(word)
         @words_string += "#{word}"
         if i < 2
           @words_string += "|"
         end
       end
-      puts "SESSION 2 >>>>>> #{session[:photourltest]}"
       @photourl = session[:photourltest]
-
-      #TODO: rifare meglio!!!!! refractoring con search_photos
-      # @photourl2 = Rails.cache.fetch(:cached_urls) {
-      #   @words_array.each do |w|
-      #     search_photos(w)
-      #   end
-      #   return @photourl
-      # }
-      # puts "DEBUG>>> PHOTO URL #{@photourl2}"
-      # @photourl = @photourl2
-
     end
   end
 
@@ -156,19 +93,15 @@ class PhotosController < ApplicationController
     render 'index', locals: {words_array: @words_array}
   end
 
-
   def search_photos(selected)
     puts "CALLING API"
     # TODO: use pexels ruby methods
     photo = request_api("https://api.pexels.com/v1/search?query=#{selected}&per_page=40")
-    # puts "DEBUG>>> #{photo}"
     if photo["total_results"] >= 45
       k=0
       while k < 40
-        # if photo["photos"][k]["src"]["medium"].include? "/pexels-photo-"
-          @photourl.push(photo["photos"][k]["src"]["medium"])
-          k += 1
-        # end
+        @photourl.push(photo["photos"][k]["src"]["medium"])
+        k += 1
       end
       response = true
     else
