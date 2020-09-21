@@ -6,6 +6,7 @@
   font: 400 1em 'Poppins', sans-serif;
   scroll-behavior: smooth;
 }
+
 h1 {
   font: 200 3em 'Poppins', sans-serif;
   text-align: center;
@@ -29,6 +30,7 @@ li.random_word {
   padding: 0.2em;
   font-size: 1.2em;
   transition: 0.2s ease;
+  margin: auto 0.5em;
 }
 li.random_word:hover {
   background-color: rgba(255,59,142,0.65);
@@ -140,10 +142,9 @@ li.random_word a {
 }
 #add_comment_form fieldset legend h2 {
   color: #777;
-  font: 200 2.4em 'Poppins', sans-serif;
+  font: 200 2.2em 'Poppins', sans-serif;
 }
 #add_comment_form fieldset #comment_name, #add_comment_form fieldset #comment_email {
-
   width: 48%;
 }
 #add_comment_form fieldset #comment_name {
@@ -163,17 +164,19 @@ li.random_word a {
   display: block;
   margin:1em auto 2em auto;
   background-color: #58b7d9;
-  padding: 0.5em 3em 0.5em 3em;
+  padding: 0.5em 1.5em 0.5em 1.5em;
   color: #fff;
   border:none;
   letter-spacing: 0.07em;
   cursor: pointer;
 }
-#add_comment_form fieldset #comment_submit:focus, #add_comment_form fieldset #comment_submit:hover{
-  background-color: white;
+#add_comment_form fieldset #comment_submit:focus, #add_comment_form fieldset #comment_submit:hover {
+  /* background-color: white;
   color:  #58b7d9;
   box-shadow: 0 0 0pt 2pt #58b7d9;
-  text-decoration: underline;
+  text-decoration: underline; */
+  transition: 0.25s ease;
+  background-color: #3695b7;
   transition: 0.25s ease;
 }
 #add_comment_form .cookie_notice {
@@ -281,4 +284,46 @@ li.random_word a {
 ::selection {
   background-color: #ff3b8e;
   color: white;
+}
+@media only screen and (max-width: 700px)  {
+  body {
+    margin: 1.3em;
+  }
+  #add_comment_form fieldset #comment_name, #add_comment_form fieldset #comment_email {
+    width: 100%;
+    float: none;
+    margin-bottom: 1em;
+  }
+  .comment_list h4.comment_date, .comment_list h3.comment_name {
+    width: 100%;
+    text-align: left;
+  }
+  #photo-gallery {
+    /* height: 600px; */
+    grid-template-rows: 1fr 1fr 2fr 2fr 2fr;
+    grid-template-columns: 3fr 1fr 2fr 3fr;
+    grid-gap: 10px;
+    grid-template-areas:  "block-A1 block-A1 block-A1 block-B2"
+                          "block-A1 block-A1 block-A1 block-A3"
+                          "block-B1 block-C2 block-C2 block-A3"
+                          "block-A2 block-A2 block-V block-V"
+                          "block-C1 block-C1 block-V block-V";
+  }
+}
+@media only screen and (min-width: 500px) and (max-width: 1024px) {
+  ul.random_words_list, #add_comment_form, .comment_list{
+    max-width: none;
+    width: 70%;
+  }
+}
+@media only screen and (min-width: 1025px) and (max-width: 1980px) {
+  ul.random_words_list, #add_comment_form, .comment_list{
+    max-width: none;
+    width: 50%;
+  }
+}
+@media only screen and (min-width: 1981) {
+  ul.random_words_list, #add_comment_form, .comment_list{
+    max-width: 2000px;
+  }
 }
