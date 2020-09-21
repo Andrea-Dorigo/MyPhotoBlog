@@ -3,7 +3,8 @@ class PhotosController < ApplicationController
   include HTTParty
 
   def index
-
+    config.cache_store = :memory_store, { size: 16.megabytes }
+    config.session_store = :cache_store
     url = request.fullpath
     uri  = URI.parse(url)
     keywords = params['words'] ? params['words'].split("|") : []
@@ -63,7 +64,7 @@ class PhotosController < ApplicationController
 
       keywords = params['words'] ? params['words'].split("|") : []
 
-      # cookies[:photo_url_array] = nil
+      # cookies[:photo_url_array1] = nil
       # photourlarray = []
       # @photourl.each do |url|
       #   # puts "#{url}" + "\n"
@@ -71,14 +72,20 @@ class PhotosController < ApplicationController
       #   photourlarray.push(photo_id[4])
       #   # teststring  += "#{@photourl[j]}" +"\n"
       # end
-      #cookies[:photo_url_array] = photourlarray
-      Rails.cache.fetch(:cached_urls, force: true, expires_in: 1.minutes) do
-        puts "miss"
-        @photourl
-      end
+      #cookies[:photo_url_array1] = photourlarray
+
+      session[:photourltest] = @photourl
+      puts "SESSION 1 >>>>>> #{session[:photourltest]}"
+      # Rails.cache.fetch(:cached_urls, force: true, expires_in: 1.hours) do
+      #   puts "miss"
+      #   @photourl
+      # end
+
+
+
       # puts "CACHED RESULTS 1 << #{cached_urls}"
       #session[:photosession] = photourlarray
-      # session[:photo_url_array] = @photourl
+      # session[:photo_url_array1] = @photourl
 
       redirect_to(home_url + "?selected=1&words="+@words_string)
     else
@@ -86,9 +93,9 @@ class PhotosController < ApplicationController
       puts "DEBUG>>> PHOTO ARRAY: #{@words_array}"
       @photo_url_index = @selected *40
 
-      # @photourl = cookies[:photo_url_array]
+      # @photourl = cookies[:photo_url_array1]
       # puts "DEBUG PHOTOURL>>> #{@photourl}"
-      #string = "#{cookies[:photo_url_array]}"
+      #string = "#{cookies[:photo_url_array1]}"
       #
       # puts "CACHED RESULTS 2 << #{cached_urls}"
 
@@ -108,15 +115,18 @@ class PhotosController < ApplicationController
           @words_string += "|"
         end
       end
+      puts "SESSION 2 >>>>>> #{session[:photourltest]}"
+      @photourl = session[:photourltest]
+
       #TODO: rifare meglio!!!!! refractoring con search_photos
-      @photourl2 = Rails.cache.fetch(:cached_urls) {
-        @words_array.each do |w|
-          search_photos(w)
-        end
-        return @photourl
-      }
-      puts "DEBUG>>> PHOTO URL #{@photourl2}"
-      @photourl = @photourl2
+      # @photourl2 = Rails.cache.fetch(:cached_urls) {
+      #   @words_array.each do |w|
+      #     search_photos(w)
+      #   end
+      #   return @photourl
+      # }
+      # puts "DEBUG>>> PHOTO URL #{@photourl2}"
+      # @photourl = @photourl2
 
     end
   end
