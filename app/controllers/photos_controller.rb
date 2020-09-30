@@ -3,34 +3,23 @@ class PhotosController < ApplicationController
   include HTTParty
 
   def index
-    config.cache_store = :memory_store, { size: 16.megabytes }
-    config.session_store = :cache_store
-    url = request.fullpath
-    uri  = URI.parse(url)
+    # config.cache_store = :memory_store, { size: 16.megabytes }
+    # config.session_store = :cache_store
+
+    uri  = URI.parse(request.fullpath)
     keywords = params['words'] ? params['words'].split("|") : []
     @words_array = keywords
-    # puts "DEBUG>>> WORDS ARRAY: #{@words_array} "
+    puts "DEBUG>>> WORDS ARRAY: #{@words_array} "
     @comment = Comment.new
     @comments = Comment.all
 
     @selected = params['selected'].to_i || 1
-    puts "DEBUG>>>> SELECTED = " + @selected.to_s
 
-    getPhotos #redirects if no @words_array is found
-
-  end
-
-  def getPhotos
     require 'open-uri'
     @photourl = []
-    @photo_url_index = 0 * @selected
-    #TODO: si potrebbe aggiungere il controllo per evitare duplicati, pur restando un'evenienza molto rara
-    # TODO: migliorare entrambi i cicli, renderli piu' efficienti e piu' comprensiili
-    # TODO: si potrebbe fare in modo che l'array degli url delle foto sia passato al click di una selected
-
+    @photo_url_index = 40 * @selected
     @words_string = ""
     if @words_array == []
-      @photo_url_index = 40
       doc = HTTParty.get("https://www.randomlists.com/data/words.json")
       parsed = JSON.parse(doc.to_s)
       i = 0
@@ -45,18 +34,13 @@ class PhotosController < ApplicationController
           i += 1
         end
       end
-
-      keywords = params['words'] ? params['words'].split("|") : []
-
+      # keywords = params['words'] ? params['words'].split("|") : []
       session[:photourltest] = @photourl
-      puts "SESSION 1 >>>>>> #{session[:photourltest]}"
-
+      session[:words_array] = @words_array
+      session[:selected] = @selected
       redirect_to(home_url + "?selected=1&words="+@words_string)
-      # TODO: refractoring: questo redirect non e' bene che sia qui.
     else
-      puts "DEBUG>>> PHOTO ARRAY: #{@words_array}"
-      @photo_url_index = @selected *40
-
+      # puts "DEBUG>>> PHOTO ARRAY: #{@words_array}"
       for i in 0..2
         word = @words_array[i]
         @words_string += "#{word}"
@@ -65,6 +49,7 @@ class PhotosController < ApplicationController
         end
       end
       @photourl = session[:photourltest]
+      session[:selected] = @selected
     end
   end
 
@@ -82,8 +67,8 @@ class PhotosController < ApplicationController
 
     if saved
       puts "DEBUG>>> COMMENTO SALVATO"
-      cookies[:name] = @comment.name
-      cookies[:email] = @comment.email
+      session[:name] = @comment.name
+      session[:email] = @comment.email
       @comment = Comment.new
     else
       @comment.errors.messages.keys.each do |c|
@@ -93,10 +78,12 @@ class PhotosController < ApplicationController
     render 'index', locals: {words_array: @words_array}
   end
 
-  def search_photos(selected)
-    puts "CALLING API"
+  def search_photos(word)
+
+      # @photourl = []
+    puts "CALLING API FOR: #{word}"
     # TODO: use pexels ruby methods
-    photo = request_api("https://api.pexels.com/v1/search?query=#{selected}&per_page=40")
+    photo = request_api("https://api.pexels.com/v1/search?query=#{word}&per_page=40")
     if photo["total_results"] >= 45
       k=0
       while k < 40
@@ -118,4 +105,45 @@ class PhotosController < ApplicationController
     JSON.parse(response.body)
   end
 
+  def show_photos_js
+    @photourl = session[:photourltest]
+    @words_array = session[:words_array]
+    @selected = params['selected'].to_i || session[:selected] #TODO: questo probabilmente si puo' passare al click
+    puts "deb #{@selected}"
+    puts "debugggg #{params['selected']}"
+    # puts "DEBUGGG photourl = #{@photourl}, words_array = #{@words_array}, selected = #{@selected}"
+    @photo_url_index = 40 * @selected
+    @words_string = ""
+    for i in 0..2
+      word = @words_array[i]
+      @words_string += "#{word}"
+      if i < 2
+        @words_string += "|"
+      end
+    end
+
+    # @photourl = []
+
+    # uri  = URI.parse(request.fullpath) #errore! l'url ora e' localhost/show_photos_js e non contiene i parametri.
+    # keywords = params['words'] ? params['words'].split("|") : []
+    # @words_array = keywords
+    # @words_string = ""
+    # puts "DEBUG>>> WORDS ARRAY: #{uri} "
+    # for i in 0..2
+    #   word = @words_array[i]
+    #   @words_string += "#{word}"
+    #   if i < 2
+    #     @words_string += "|"
+    #   end
+    # end
+    # @selected = params['selected'].to_i || 1
+    # @photo_url_index = 40 * @selected
+    #
+    #   search_photos("dog")
+
+    # puts "AJAX_CALL>>> photo url: #{@photourl}"
+    respond_to do |format|
+       format.js
+    end
+  end
 end

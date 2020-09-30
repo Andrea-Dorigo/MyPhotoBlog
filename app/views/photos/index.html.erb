@@ -1,40 +1,10 @@
 
 <h1>Photo Blog</h1>
-
-<ul class="random_words_list">
-  <% for i in 0..2 %>
-    <% if @selected.to_i == i %>
-      <!-- TODO: should I move this "logic" somewhere else? -->
-      <%= content_tag :li, class: ["random_word","selected"] do -%>
-        <%= link_to @words_array[i], home_url(words: @words_string, selected: i), { data: { turbolinks: "false" } } %>
-        <!-- TODO: this above tag should be a <p> and not an <a> (because you already are in the correct page)-->
-      <% end -%>
-    <% else %>
-      <%= content_tag :li, class: "random_word" do -%>
-        <%= link_to @words_array[i], home_url(words: @words_string, selected: i), { data: { turbolinks: "false" } } %>
-      <% end -%>
-    <% end %>
-  <% end %>
-</ul>
-
-<div id="photo-gallery">
-<!--TODO could I use "each"? Is it better? -->
-<!--TODO maybe a 2-dimensional array can make loops clearer -->
-  <% for i in 0..7 do %>
-    <%= content_tag :div, class: ["js-flickity", "main-carousel"], tabindex: "-1", data: { flickity:  { "autoPlay": 4000,
-                 "wrapAround": true,
-                 "draggable": false
-               } } do -%>
-
-     <% 5.times do %>
-        <%# <%= image_tag "https://designshack.net/wp-content/uploads/placeholder-image.png" , :class => 'carousel-cell' %>
-       <%= image_tag @photourl[@photo_url_index.to_i] , :class => 'carousel-cell' %>
-       <% @photo_url_index += 1 %>
-     <% end %>
-    <% end -%>
-  <% end %>
-
+<div class="test" >
+    <%# <%= link_to "test", "/test" %>
 </div>
+<!-- <a href="" data-remote=true id="unique_id" class="some_class" data-turbolinks="false" >Testing things</a> -->
+<%= link_to "show_photos_js", "/show_photos_js", { method: "get", remote: true, id: "id", data: { turbolinks: "false"} } %>
 
 <%= render partial: "add_comment_form" , locals: {comment: @comment, words_array: @words_array}%>
 

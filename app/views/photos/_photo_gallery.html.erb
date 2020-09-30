@@ -1,0 +1,42 @@
+<script type="text/text/javascript">
+  console.log("andrea");
+  // document.getElementById("id2").onclick = function() {
+  //   console.log(this.getAttribute("data-test"));
+  // };
+</script>
+
+<ul class="random_words_list">
+  <% for i in 0..2 %>
+    <% if @selected.to_i == i %>
+      <!-- TODO: should I move this "logic" somewhere else? -->
+      <%= content_tag :li, class: ["random_word","selected"] do -%>
+        <%= link_to @words_array[i], "/show_photos_js?selected=3", { method: "get", remote: true, id: "new", data: {turbolinks: "false" }} %>
+        <!-- TODO: this above tag should be a <p> and not an <a> (because you already are in the correct page)-->
+      <% end -%>
+    <% else %>
+      <%= content_tag :li, class: "random_word" do -%>
+        <%= link_to @words_array[i], "/show_photos_js?selected=#{i}", { method: "get", remote: true, data: {turbolinks: "false"} } %>
+      <% end -%>
+    <% end %>
+  <% end %>
+</ul>
+
+<div id="photo-gallery">
+<!--TODO could I use "each"? Is it better? -->
+<!--TODO maybe a 2-dimensional array can make loops clearer -->
+  <% for i in 0..7 do %>
+    <%= content_tag :div, class: ["js-flickity", "main-carousel"], tabindex: "-1", data: { flickity:  { "autoPlay": 4000,
+                 "wrapAround": true,
+                 "draggable": false
+               } } do -%>
+
+     <% 5.times do %>
+        <%# <%= image_tag "https://designshack.net/wp-content/uploads/placeholder-image.png" , :class => 'carousel-cell' %>
+       <%= image_tag @photourl[@photo_url_index.to_i] , :class => 'carousel-cell' %>
+       <% @photo_url_index += 1 %>
+     <% end %>
+    <% end -%>
+  <% end %>
+
+
+</div>

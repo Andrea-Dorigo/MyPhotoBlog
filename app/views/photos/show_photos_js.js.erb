@@ -1,0 +1,5 @@
+
+
+<%= j ( puts "HERE BOI #{@selected}") %>
+window.Rails = Rails;
+Rails.$('.test')[0].innerHTML = ("<%= j (render partial: 'photo_gallery', locals: { selected: @selected, words_array: @words_array, words_string: @words_string, photo_url_index: @photo_url_index, photourl: @photourl} ) %>");
