@@ -1,5 +1,9 @@
 
 
-<%= j ( puts "HERE BOI #{@selected}") %>
+<%= j ( puts "selected: #{params['selected'].to_i}") %>
 window.Rails = Rails;
-Rails.$('.test')[0].innerHTML = ("<%= j (render partial: 'photo_gallery', locals: { selected: @selected, words_array: @words_array, words_string: @words_string, photo_url_index: @photo_url_index, photourl: @photourl} ) %>");
+Rails.$('.test')[0].innerHTML = ("<%= j (render partial: 'photo_gallery', locals: {
+          selected: params['selected'].to_i || 1,
+          words_array: session[:words_array],
+          photourl: session[:photourl]
+        } ) %>");

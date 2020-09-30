@@ -13,14 +13,14 @@ console.log("loaded custom.js");
 //     console.log("success")
 //   }
 // })
-Rails.ajax({
-  url: "/show_photos_js",
-  type: "get",
-  data: "",
-  success: function(data) {
-    console.log("here i am")
-  },
-})
+// Rails.ajax({
+//   url: "/show_photos_js",
+//   type: "get",
+//   data: "",
+//   success: function(data) {
+//     console.log("here i am")
+//   },
+// })
 // $('.random_word').bind('ajax:success', function() {
 //      console.log("i'm in")
 // });

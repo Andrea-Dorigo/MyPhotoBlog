@@ -1,12 +1,10 @@
 
 <h1>Photo Blog</h1>
 <div class="test" >
-    <%# <%= link_to "test", "/test" %>
+    <%= render partial: "photo_gallery" , locals: {selected: 1, words_array: session[:words_array], photourl: session[:photourl]}%>
 </div>
-<!-- <a href="" data-remote=true id="unique_id" class="some_class" data-turbolinks="false" >Testing things</a> -->
-<%= link_to "show_photos_js", "/show_photos_js", { method: "get", remote: true, id: "id", data: { turbolinks: "false"} } %>
 
-<%= render partial: "add_comment_form" , locals: {comment: @comment, words_array: @words_array}%>
+<%= render partial: "add_comment_form" , locals: {comment: @comment}%>
 
 <%= tag.ul class: "comment_list" do %>
   <!--TODO: sort comments from most recent to last? -->
