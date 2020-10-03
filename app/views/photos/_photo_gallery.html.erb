@@ -2,7 +2,7 @@
   <% for i in 0..2 %>
     <% if selected.to_i == i %>
       <%= content_tag :li, class: ["random_word","selected"] do -%>
-        <%= link_to words_array[i], "/show_photos_js?selected=3", { method: "get", remote: true, id: "new", data: {turbolinks: "false" }} %>
+        <%= link_to words_array[i], "/show_photos_js?selected=#{i}", { method: "get", remote: true, id: "new", data: {turbolinks: "false" }} %>
       <% end -%>
     <% else %>
       <%= content_tag :li, class: "random_word" do -%>
@@ -12,7 +12,7 @@
   <% end %>
 </ul>
 <div id="photo-gallery">
-  <% photo_url_index = selected*40 %>
+  <% photo_url_index = selected.to_i*40 %>
   <% for i in 0..7 do %>
     <%= content_tag :div, class: ["js-flickity", "main-carousel"], tabindex: "-1", data: { flickity:  { "autoPlay": 4000,
                  "wrapAround": true,

@@ -1,7 +1,8 @@
 
 <h1>Photo Blog</h1>
 <div class="test" >
-    <%= render partial: "photo_gallery" , locals: {selected: 1, words_array: session[:words_array], photourl: session[:photourl]}%>
+    <%puts "params selected: #{params[:selected]}"%>
+    <%= render partial: "photo_gallery" , locals: {selected: params[:selected].to_i, words_array: session[:words_array], photourl: session[:photourl]}%>
 </div>
 
 <%= render partial: "add_comment_form" , locals: {comment: @comment}%>

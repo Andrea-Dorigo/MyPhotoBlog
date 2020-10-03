@@ -9,6 +9,8 @@ class PhotosController < ApplicationController
     words_array = params['words'] ? params['words'].split("|") : []
     @comment = Comment.new
     @comments = Comment.all
+
+    puts "words array #{words_array}, selected = #{params[:selected].to_i}"
     if words_array == []
       photourl = []
       doc = HTTParty.get("https://www.randomlists.com/data/words.json")
@@ -43,7 +45,11 @@ class PhotosController < ApplicationController
 
   def show_photos_js
     respond_to do |format|
-       format.js
+       format.js 
+       format.html {
+         words_array = session[:words_array]
+         redirect_to(home_url + "?selected=#{params[:selected]}&words=#{words_array[0]}|#{words_array[1]}|#{words_array[2]}")
+       }
     end
   end
 
@@ -51,6 +57,7 @@ class PhotosController < ApplicationController
     @comment = Comment.new(params.require(:comment).permit(:name, :email, :body))
     uri  = URI.parse(request.fullpath)
     @words_array = params['words'] ? params['words'].split("|") : []
+    # ATTENZIONE: ORA QUANDO COMMENTI L'IMMAGINE SELEZIONATA TORNA QUELLA DI PARTENZA (fa il render di index questo metodo!)
     saved = @comment.save
     @comments = Comment.all
     @selected = params['selected'].to_i || 1
