@@ -12,12 +12,12 @@
   <fieldset>
     <legend class="form_title"><h2>Add a Comment</h2></legend>
       <!--TODO: si potrebbe eevidenziare in rosso i campi non inseriti-->
-      <%= c.text_field(:name,  placeholder: 'Name', class: (comment.errors.messages.keys.include?(:name) ? 'wrong-field': 'right_field'), value: comment.name || session[:name] )%>
-      <%= c.text_field(:email,  placeholder: 'Email address', class: (comment.errors.messages.keys.include?(:email) ? 'wrong-field': 'right_field'), value: comment.email || session[:email]) %>
+      <%= c.text_field(:name,  placeholder: 'Name', class: (comment.errors.messages.keys.include?(:name) ? 'wrong-field': 'right_field'), value: comment.name )%>
+      <%= c.text_field(:email,  placeholder: 'Email address', class: (comment.errors.messages.keys.include?(:email) ? 'wrong-field': 'right_field'), value: comment.email ) %>
       <%= c.text_area(:body,  placeholder: 'Your Comment', class: (comment.errors.messages.keys.include?(:body) ? 'wrong-field': 'right_field'), value: comment.body || "")%>
       <%= check_box_tag(:remember_me, 0,true) %>
       <%= label_tag(:remember_me, "Remember me") %>
-      <% if session[:name].nil? %>
+      <% if comment.name.nil? %>
         <%= tag.p "This site uses technical cookies to remember your Name and Email.", class: "cookie_notice" %>
       <% end %>
       <%= c.submit(:id => "comment_submit", :value => "Add this comment") %>
