@@ -34,22 +34,19 @@ class PhotosController < ApplicationController
   end
 
   def create_comment
+    load_data
     @comment = Comment.new(params.require(:comment).permit(:name, :email, :body))
-    uri  = URI.parse(request.fullpath)
-    @words_array = params['words'] ? params['words'].split("|") : []
-    saved = @comment.save
-    @comments = Comment.all
-    @selected = params['selected'].to_i || 1
     words_string = "#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}"
     @photourl = Rails.cache.fetch("photourl_#{words_string}", expires_in: 5.minutes) do
       get_photourl(@words_array)
     end
+    saved = @comment.save
     if saved
       cookies[:name] = @comment.name
       cookies[:email] = @comment.email
       @comment = Comment.new
     end
-    render 'index'
+    redirect_to(home_url + "?selected=#{params[:selected]}&words=#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}")
   end
 
   # Returns an array containing the photo urls of a given words_array of size 3;
