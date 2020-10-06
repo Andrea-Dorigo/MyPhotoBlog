@@ -3,13 +3,14 @@ class PhotosController < ApplicationController
   include HTTParty
 
   def index
-    session_key = cookies[:_myphotoblog_session]
     load_data # @words_array, @selected, @comment, @comments
+    logger.debug "words array === #{@words_array.to_s}"
     if @words_array.empty?
-      get_photourl()
+      get_photourl(@words_array)
       redirect_to(home_url + "?selected=1&words=#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}")
     else
-      @photourl = Rails.cache.fetch("photourl_#{session_key}", expires_in: 5.minutes) do
+      words_string = "#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}"
+      @photourl = Rails.cache.fetch("photourl_#{words_string}", expires_in: 5.minutes) do
         photourl = get_photourl(@words_array)
       end
     end
@@ -18,9 +19,9 @@ class PhotosController < ApplicationController
   def show_photos_js
     respond_to do |format|
        format.js {
-         session_key = cookies[:_myphotoblog_session]
          @words_array = params['words'] ? params['words'].split("|") : []
-         @photourl = Rails.cache.fetch("photourl_#{session_key}", expires_in: 5.minutes) do
+         words_string = "#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}"
+         @photourl = Rails.cache.fetch("photourl_#{words_string}", expires_in: 5.minutes) do
            get_photourl(@words_array)
          end
          @selected = params['selected'].to_i || 1
@@ -33,14 +34,14 @@ class PhotosController < ApplicationController
   end
 
   def create_comment
-    session_key = cookies[:_myphotoblog_session]
     @comment = Comment.new(params.require(:comment).permit(:name, :email, :body))
     uri  = URI.parse(request.fullpath)
     @words_array = params['words'] ? params['words'].split("|") : []
     saved = @comment.save
     @comments = Comment.all
     @selected = params['selected'].to_i || 1
-    @photourl = Rails.cache.fetch("photourl_#{session_key}", expires_in: 5.minutes) do
+    words_string = "#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}"
+    @photourl = Rails.cache.fetch("photourl_#{words_string}", expires_in: 5.minutes) do
       get_photourl(@words_array)
     end
     if saved
@@ -78,7 +79,8 @@ class PhotosController < ApplicationController
           i += 1
         end
       end
-      Rails.cache.write("photourl_#{session_key}", @photourl, expires_in: 5.minutes)
+      words_string = "#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}"
+      Rails.cache.write("photourl_#{words_string}", @photourl, expires_in: 5.minutes)
     end
     photourl
   end
@@ -93,7 +95,7 @@ class PhotosController < ApplicationController
   end
 
   # Initializes and loads the variables necessary to the views, precisely:
-  # @words_array, @selected, @comment, @comments
+  # @words_array, @selected, @comment, @comments, @photourl
   def load_data
     require 'open-uri'
     uri  = URI.parse(request.fullpath)
@@ -103,6 +105,7 @@ class PhotosController < ApplicationController
     @comments = Comment.all
     @comment.name = cookies[:name]
     @comment.email = cookies[:email]
+    @photourl = []
   end
 
 end #PhotosController
