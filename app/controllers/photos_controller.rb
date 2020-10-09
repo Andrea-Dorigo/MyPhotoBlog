@@ -3,10 +3,10 @@ class PhotosController < ApplicationController
   include HTTParty
 
   def index
-    load_data # @words_array, @selected, @comment, @comments
+    load_data # @words_array, @selected, @comment, @comments, @photourl
     logger.debug "words array === #{@words_array.to_s}"
     if @words_array.empty?
-      get_photourl(@words_array)
+      @photourl = get_photourl(@words_array)
       redirect_to(home_url + "?selected=1&words=#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}")
     else
       words_string = "#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}"
@@ -14,20 +14,19 @@ class PhotosController < ApplicationController
         photourl = get_photourl(@words_array)
       end
     end
-  end
+end
 
   def show_photos_js
     respond_to do |format|
+      @words_array = params['words'] ? params['words'].split("|") : []
        format.js {
-         @words_array = params['words'] ? params['words'].split("|") : []
-         words_string = "#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}"
+        words_string = "#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}"
          @photourl = Rails.cache.fetch("photourl_#{words_string}", expires_in: 5.minutes) do
            get_photourl(@words_array)
          end
          @selected = params['selected'].to_i || 1
        }
        format.html {
-         @words_array = params['words'] ? params['words'].split("|") : []
          redirect_to(home_url + "?selected=#{params[:selected]}&words=#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}")
        }
     end

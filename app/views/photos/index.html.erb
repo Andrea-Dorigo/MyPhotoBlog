@@ -8,11 +8,7 @@
 
 <%= tag.ul class: "comment_list" do %>
   <!--TODO: sort comments from most recent to last? -->
-  <% @comments.each do |comment| %>
-    <li class="comment_list_item">
-      <h3 class="comment_name"><%= comment.name %></h3>
-      <h4 class="comment_date"><%= comment.created_at.in_time_zone("CET").strftime('%d/%m/%Y  %H:%M') %></h4>
-      <p class="comment_body"><%= comment.body %></p>
-    </li>
+  <% @comments.each do |c| %>
+    <%= render partial: "single_comment" , locals: {comment: c}%>
   <% end %>
 <% end %>
