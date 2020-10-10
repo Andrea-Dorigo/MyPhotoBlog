@@ -45,7 +45,8 @@ end
       cookies[:email] = @comment.email
       @comment = Comment.new
     end
-    redirect_to(home_url + "?selected=#{params[:selected]}&words=#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}")
+    render 'index', locals: {comment: @comment}
+  #  redirect_to(home_url + "?selected=#{params[:selected]}&words=#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}")
   end
 
   # Returns an array containing the photo urls of a given words_array of size 3;
