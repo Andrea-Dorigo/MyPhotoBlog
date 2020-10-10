@@ -14,16 +14,51 @@
 <div id="photo-gallery">
   <% photo_url_index = selected.to_i*40 %>
   <% for i in 0..7 do %>
-    <%= content_tag :div, class: ["js-flickity", "main-carousel"], tabindex: "-1", data: { flickity:  { "autoPlay": 4000,
+    <%= content_tag :div, class: ["carousel"], tabindex: "-1", data: { flickity:  { "autoPlay": 4000,
                  "wrapAround": true,
                  "draggable": false
                } } do -%>
      <% 5.times do %>
-       <%= image_tag photourl[photo_url_index.to_i] , :class => 'carousel-cell' %>
+       <%= image_tag photourl[photo_url_index.to_i] , :class => 'cell' %>
        <% photo_url_index += 1 %>
      <% end %>
     <% end -%>
   <% end %>
 
 
+
+
+
 </div>
+
+<!-- <div>
+
+<div class="testing" tabindex="-1">
+       <img class="cell" src="https://images.pexels.com/photos/4424672/pexels-photo-4424672.jpeg?auto=compress&amp;cs=tinysrgb&amp;h=350">
+       <img class="cell" src="https://images.pexels.com/photos/4126813/pexels-photo-4126813.jpeg?auto=compress&amp;cs=tinysrgb&amp;h=350">
+       <img class="cell" src="https://images.pexels.com/photos/4048705/pexels-photo-4048705.jpeg?auto=compress&amp;cs=tinysrgb&amp;h=350">
+       <img class="cell" src="https://images.pexels.com/photos/3933277/pexels-photo-3933277.jpeg?auto=compress&amp;cs=tinysrgb&amp;h=350">
+       <img class="cell" src="https://images.pexels.com/photos/3825444/pexels-photo-3825444.jpeg?auto=compress&amp;cs=tinysrgb&amp;h=350">
+</div>
+<div class="testing" tabindex="-1">
+       <img class="cell" src="https://images.pexels.com/photos/4424672/pexels-photo-4424672.jpeg?auto=compress&amp;cs=tinysrgb&amp;h=350">
+       <img class="cell" src="https://images.pexels.com/photos/4126813/pexels-photo-4126813.jpeg?auto=compress&amp;cs=tinysrgb&amp;h=350">
+       <img class="cell" src="https://images.pexels.com/photos/4048705/pexels-photo-4048705.jpeg?auto=compress&amp;cs=tinysrgb&amp;h=350">
+       <img class="cell" src="https://images.pexels.com/photos/3933277/pexels-photo-3933277.jpeg?auto=compress&amp;cs=tinysrgb&amp;h=350">
+       <img class="cell" src="https://images.pexels.com/photos/3825444/pexels-photo-3825444.jpeg?auto=compress&amp;cs=tinysrgb&amp;h=350">
+</div>
+</div> -->
+
+<!-- <script>
+
+  var first = document.getElementsByClassName("main-carousel")[0];
+  console.log(first);
+  var cell = first.getElementsByClassName("carousel-cell");
+  console.log(cell);
+  var interval = setInterval(nextSlide,2000);
+  var current = 0;
+  function nextSlide(){
+    cell[current].classList.remove("visible")
+  }
+
+</script> -->
