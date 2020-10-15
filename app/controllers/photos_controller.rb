@@ -10,7 +10,7 @@ class PhotosController < ApplicationController
       redirect_to(home_url + "?selected=1&words=#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}")
     else
       words_string = "#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}"
-      @photourl = Rails.cache.fetch("photourl_#{words_string}", expires_in: 5.minutes) do
+      @photourl = Rails.cache.fetch("photourl_#{words_string}", expires_in: 60.minutes) do
         photourl = get_photourl(@words_array)
       end
     end
@@ -19,15 +19,23 @@ end
   def show_photos_js
     respond_to do |format|
       @words_array = params['words'] ? params['words'].split("|") : []
+      @photourl = []
+      if @words_array==[]
+        Rails.cache.clear
+      end
        format.js {
         words_string = "#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}"
-         @photourl = Rails.cache.fetch("photourl_#{words_string}", expires_in: 5.minutes) do
+         @photourl = Rails.cache.fetch("photourl_#{words_string}", expires_in: 60.minutes) do
            get_photourl(@words_array)
          end
          @selected = params['selected'].to_i || 1
        }
        format.html {
-         redirect_to(home_url + "?selected=#{params[:selected]}&words=#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}")
+         unless params["words"].nil?
+           redirect_to(home_url + "?selected=#{params[:selected]}&words=#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}")
+         else
+           redirect_to(home_url)
+         end
        }
     end
   end
@@ -50,10 +58,10 @@ end
   end
 
   # Returns an array containing the photo urls of a given words_array of size 3;
-  # If words_array is empty, it populates it with 3 new words
+  # If words_array is empty, it populates @words_array with 3 new words
   def get_photourl(words_array)
+    photourl = []
     unless words_array.empty?
-      photourl = []
       words_array.each do |word|
         photo = fetch_photo_urls(word)
         40.times do |k|
@@ -61,6 +69,7 @@ end
         end
       end
     else
+      @words_array = []
       doc = HTTParty.get("https://www.randomlists.com/data/words.json")
       parsed = JSON.parse(doc.to_s)
       i = 0
@@ -70,14 +79,14 @@ end
         photo = fetch_photo_urls(word)
         if photo["total_results"] >= 40
           40.times do |k|
-            @photourl.push(photo["photos"][k]["src"]["medium"])
+            photourl.push(photo["photos"][k]["src"]["medium"])
           end
           @words_array.push(word)
           i += 1
         end
       end
       words_string = "#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}"
-      Rails.cache.write("photourl_#{words_string}", @photourl, expires_in: 5.minutes)
+      Rails.cache.write("photourl_#{words_string}", photourl, expires_in: 60.minutes)
     end
     photourl
   end

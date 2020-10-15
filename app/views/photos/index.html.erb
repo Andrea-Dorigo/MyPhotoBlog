@@ -1,5 +1,7 @@
 
 <h1>Photo Blog</h1>
+<%=link_to "refresh", "/show_photos_js", {method: "get", remote: true, id: "refresh_icon", class: "material-icons", data: {turbolinks: "false"} }%>
+
 <div class="test" >
     <%= render partial: "photo_gallery" , locals: { selected: @selected, words_array: @words_array, photourl: @photourl }%>
 </div>
