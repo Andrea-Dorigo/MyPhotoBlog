@@ -9,8 +9,8 @@
 <%= render partial: "add_comment_form" , locals: {comment: @comment}%>
 
 <%= tag.ul class: "comment_list" do %>
-  <!--TODO: sort comments from most recent to last? -->
-  <% @comments.each do |c| %>
+  <% sorted = @comments.order("created_at DESC") %>
+  <% sorted.each do |c| %>
     <%= render partial: "single_comment" , locals: {comment: c}%>
   <% end %>
 <% end %>

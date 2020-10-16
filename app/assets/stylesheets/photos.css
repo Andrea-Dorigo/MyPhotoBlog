@@ -114,6 +114,7 @@ li.random_word a {
   border: none;
   text-align: center;
   position: relative;
+  margin-top: 2em;
 }
 #add_comment_form fieldset > * {
   border: 1px solid #999;
@@ -246,6 +247,16 @@ li.random_word a {
   flex-wrap: wrap;
   list-style-type: none;
   margin: 2em auto 2em auto;
+  overflow: auto;
+  max-height: 15em;
+}
+.comment_list_item.new {
+  animation: 0.8s slide_down_comment ease;
+}
+@keyframes slide_down_comment {
+  0% {max-height:0; opacity: 0;}
+  50% {max-height:15em; opacity: 0;}
+  100% {max-height:15em; opacity: 1;}
 }
 .comment_list_item > * {
   font: 200 1em 'Poppins', sans-serif;
@@ -266,18 +277,31 @@ li.random_word a {
   width: 100%;
   margin-top: 0.6em;
 }
-
+@keyframes slide_down {
+  0% {max-height:0;}
+  100% {max-height:5em;}
+}
 .error-message {
+  height: 5em;
   background-color: #fec4c1;
+  padding: 0;
+  border-radius: 7px;
+  margin-bottom: 0;
+  margin-top: 0;
+  animation: 0.3s slide_down ease;
+}
+@keyframes fade_in_text {
+  0% {opacity:0;}
+  50% {opacity: 0;}
+  100% {opacity: 1;}
+}
+#form-error > p {
   color: #e7574e;
-  padding: 1em 1em 1em 1em;
   text-align: center;
   font-weight: 800;
-  border-radius: 7px;
-  margin-bottom: 2em;
-  margin-top: 1em;
+  padding: 1em;
+  animation: 0.6s fade_in_text ease;
 }
-
 #add_comment_form fieldset .wrong-field{
   box-shadow: 0 0 0pt 1pt #fec4c1;
   border: 1px solid #e7574e;

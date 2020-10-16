@@ -44,16 +44,26 @@ end
     load_data
     @comment = Comment.new(params.require(:comment).permit(:name, :email, :body))
     words_string = "#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}"
-    @photourl = Rails.cache.fetch("photourl_#{words_string}", expires_in: 5.minutes) do
+    @photourl = Rails.cache.fetch("photourl_#{words_string}", expires_in: 60.minutes) do
       get_photourl(@words_array)
     end
     saved = @comment.save
     if saved
       cookies[:name] = @comment.name
       cookies[:email] = @comment.email
-      @comment = Comment.new
     end
-    render 'index', locals: {comment: @comment}
+    respond_to do |format|
+      format.js {
+        render partial: "append_comment", locals: {comment: @comment}
+      }
+      format.html {
+          render 'index', locals: {comment: @comment}
+      }
+    end
+
+
+    #render 'index', locals: {comment: @comment}
+
   #  redirect_to(home_url + "?selected=#{params[:selected]}&words=#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}")
   end
 
