@@ -20,7 +20,8 @@
       <% if comment.name.nil? %>
         <%= tag.p "This site uses technical cookies to remember your Name and Email.", class: "cookie_notice" %>
       <% end %>
-      <%= c.submit(id: "comment_submit", value: "Add this comment", data: {disable_with: false, turbolinks: false}) %>
+      <%= c.hidden_field :word, :value => @words_array[@selected], :id => "hidden_word" %>
+      <%= c.submit(id: "comment_submit", value: "Add this comment", remote: true, data: {disable_with: false, turbolinks: false}) %>
   </fieldset>
 
 <% end %>

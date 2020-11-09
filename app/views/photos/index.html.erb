@@ -6,11 +6,8 @@
     <%= render partial: "photo_gallery" , locals: { selected: @selected, words_array: @words_array, photourl: @photourl }%>
 </div>
 
-<%= render partial: "add_comment_form" , locals: {comment: @comment}%>
+<%= render partial: "add_comment_form" , locals: {comment: @comment, words_array: @words_array, selected: @selected} %>
 
-  <% sorted = @comments.order("created_at DESC") %>
-  <% sorted.each do |c| %>
-    <%= render partial: "single_comment" , locals: {comment: c}%>
-  <% end %>
 <%= tag.ul id: "comments_list" do %>
+  <%= render partial: "comments_list" , locals: {comments: @comments, selected: @selected, words_array: @words_array} %>
 <% end %>

@@ -4,37 +4,42 @@ class PhotosController < ApplicationController
 
   PHOTO_MIN_RESULTS = 40 # minimum ammount of results necessary per word
   CACHE_EXPIRE_TIME = (ENV.fetch('CACHE_EXPIRE_TIME')).to_i.minutes
+
   def index
     load_data # @words_array, @selected, @comment, @comments, @photourl
-    logger.debug "words array === #{@words_array.to_s}"
+    logger.debug "words array === #{@words_array}"
     if @words_array.empty?
-      @photourl = get_photourl(@words_array)
-      redirect_to(home_url + "?selected=1&words=#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}")
+      @words_array = get_words()
+      redirect_to(home_url + "?s=1&w=#{serialize_words(@words_array)}")
     else
-      words_string = "#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}"
-      @photourl = Rails.cache.fetch("photourl_#{words_string}", expires_in: 60.minutes) do
-        photourl = get_photourl(@words_array)
+      @words_array.each do |word|
+        @photourl.push(get_photos(word))
       end
+      @photourl = @photourl.flatten
     end
-end
+  end
 
-  def show_photos_js
+  def show_photo_gallery
     respond_to do |format|
-      @words_array = params['words'] ? params['words'].split("|") : []
+      @words_array = params[:w] ? params[:w].split("|") : []
+      @words_array = get_words() if @words_array.empty?
+      @comments = Comment.all.order("created_at DESC")
       @photourl = []
-      if @words_array==[]
-        Rails.cache.clear
-      end
+
+      @selected = params[:s].to_i
+
+
+      @words_string = serialize_words(@words_array)
        format.js {
-        words_string = "#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}"
-         @photourl = Rails.cache.fetch("photourl_#{words_string}", expires_in: 60.minutes) do
-           get_photourl(@words_array)
+         @words_array.each do |word|
+           @photourl.push(get_photos(word))
          end
-         @selected = params['selected'].to_i || 1
+         @photourl = @photourl.flatten
+         @selected = params[:s].to_i || 1
        }
        format.html {
-         unless params["words"].nil?
-           redirect_to(home_url + "?selected=#{params[:selected]}&words=#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}")
+         unless params[:w].nil?
+           redirect_to(home_url + "?s=#{params[:s]}&w=#{@words_string}")
          else
            redirect_to(home_url)
          end
@@ -43,12 +48,9 @@ end
   end
 
   def create_comment
-    load_data
-    @comment = Comment.new(params.require(:comment).permit(:name, :email, :body))
-    words_string = "#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}"
-    @photourl = Rails.cache.fetch("photourl_#{words_string}", expires_in: 60.minutes) do
-      get_photourl(@words_array)
-    end
+    @comments = Comment.all.order("created_at DESC")
+    @comment = Comment.new(params.require(:comment).permit(:name, :email, :body, :word))
+    words_string = params[:w]
     saved = @comment.save
     if saved
       cookies[:name] = @comment.name
@@ -56,72 +58,76 @@ end
     end
     respond_to do |format|
       format.js {
-        render partial: "append_comment", locals: {comment: @comment}
+        render partial: "append_comment", locals: {comment: @comment, comments: @comments }
       }
       format.html {
-        if saved
-          @comment.body = ""
-        end
-          render 'index', locals: {comment: @comment}
+        @comment.body = "" if saved
+        redirect_to(home_url + "?s=#{params[:s]}&w=#{words_string}")
       }
     end
   end
 
-  # Returns an array containing the photo urls of a given words_array of size 3;
-  # If words_array is empty, it populates @words_array with 3 new words
-  def get_photourl(words_array)
-    photourl = []
-    unless words_array.empty?
-      words_array.each do |word|
-        photo = fetch_photo_urls(word)
-        40.times do |k|
-          photourl.push(photo["photos"][k]["src"]["medium"])
-        end
+  def get_photos(word)
+    Rails.cache.fetch("photos_of_#{word}", expires_in: CACHE_EXPIRE_TIME) do
+      logger.debug "fetch photos of word: ==> #{word}"
+      photos = search_photos(word)
+      photo_array = []
+      40.times do |k|
+        photo_array.push(photos[k])
       end
-    else
-      @words_array = []
-      doc = HTTParty.get("https://www.randomlists.com/data/words.json")
-      parsed = JSON.parse(doc.to_s)
-      i = 0
-      while i < 3
-        word = parsed["data"].sample
-        logger.debug "searching for: #{word}"
-        photo = fetch_photo_urls(word)
-        if photo["total_results"] >= 40
-          40.times do |k|
-            photourl.push(photo["photos"][k]["src"]["medium"])
-          end
-          @words_array.push(word)
-          i += 1
-        end
-      end
-      words_string = "#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}"
-      Rails.cache.write("photourl_#{words_string}", photourl, expires_in: 60.minutes)
+      photo_array
     end
-    photourl
   end
 
-  # Fetches photo data of a given word, using the pexels api
-  def fetch_photo_urls(word)
-    url = "https://api.pexels.com/v1/search?query=#{word}&per_page=40"
-    pexels_key = ENV.fetch('PEXELS_API_KEY')
-    response = Excon.get(url, headers: {'Authorization' => pexels_key } )
-    return nil if response.status != 200
-    JSON.parse(response.body)
+  def get_words
+    words_array = []
+    doc = HTTParty.get("https://www.randomlists.com/data/words.json")
+    parsed = JSON.parse(doc.to_s)
+    i = 0
+    while i < 3
+      word = parsed["data"].sample
+      if search_photos(word) != []
+           i += 1
+           words_array.push(word)
+      end
+    end
+    return words_array
   end
 
-  # Initializes and loads the variables necessary to the views, precisely:
-  # @words_array, @selected, @comment, @comments, @photourl
+  def search_photos(word)
+    photos_of = Rails.cache.fetch("photos_of_#{word}", expires_in: CACHE_EXPIRE_TIME) do
+      logger.debug "photos_of_#{word} not found in cache"
+       url = "https://api.pexels.com/v1/search?query=#{word}&per_page=40"
+       pexels_key = ENV.fetch('PEXELS_API_KEY')
+       response = Excon.get(url, headers: {'Authorization' => pexels_key } )
+       return nil if response.status != 200
+       photo = JSON.parse(response.body)
+       photos_of_word = []
+       if photo["total_results"] >= 40
+        logger.debug "we have more than 40 results!"
+         40.times do |k|
+           photos_of_word.push(photo["photos"][k]["src"]["large2x"])
+         end
+         Rails.cache.write("photos_of_#{word}", photos_of_word, expires_in: CACHE_EXPIRE_TIME)
+       end
+       photos_of_word
+    end
+  end
+
   def load_data
     require 'open-uri'
     uri  = URI.parse(request.fullpath)
-    @words_array = params['words'] ? params['words'].split("|") : []
-    @selected = params['selected'].to_i || 1
+    @words_array = params[:w] ? params[:w].split("|") : []
+    @selected = params[:s].to_i || 1
     @comment = Comment.new
-    @comments = Comment.all
+    @comments = Comment.all.order("created_at DESC")
     @comment.name = cookies[:name]
     @comment.email = cookies[:email]
     @photourl = []
+  end
+
+  private def serialize_words(words_array)
+    return "#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}"
   end
 
 end #PhotosController

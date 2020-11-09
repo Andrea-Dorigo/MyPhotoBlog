@@ -1,0 +1,7 @@
+<% comments.each do |c| %>
+
+  <% if c.word == words_array[selected] %>
+    <% logger.debug "DEBUG >>> c.body == #{c.body} c.word == #{c.word} array[selected]== #{words_array[selected]}" %>
+    <%= render partial: "single_comment" , locals: {comment: c}%>
+  <% end %>
+<% end %>
