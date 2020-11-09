@@ -1,10 +1,6 @@
 class Comment < ApplicationRecord
 
-  validates  :name, :body, presence: true
-  validates :email, format: {with: URI::MailTo::EMAIL_REGEXP}
+  validates :name, :body, :word, presence: true
+  validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: :create }
 
-
-  # def funny_name
-  #
-  # end
 end
