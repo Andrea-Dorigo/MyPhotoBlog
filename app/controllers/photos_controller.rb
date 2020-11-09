@@ -2,6 +2,8 @@ class PhotosController < ApplicationController
 
   include HTTParty
 
+  PHOTO_MIN_RESULTS = 40 # minimum ammount of results necessary per word
+  CACHE_EXPIRE_TIME = (ENV.fetch('CACHE_EXPIRE_TIME')).to_i.minutes
   def index
     load_data # @words_array, @selected, @comment, @comments, @photourl
     logger.debug "words array === #{@words_array.to_s}"
