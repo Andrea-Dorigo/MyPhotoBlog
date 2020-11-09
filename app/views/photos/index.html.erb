@@ -1,16 +1,16 @@
 
 <h1>Photo Blog</h1>
-<%=link_to "refresh", "/show_photos_js", {method: "get", remote: true, id: "refresh_icon", class: "material-icons", data: {turbolinks: "false"} }%>
+<%=link_to "refresh", "/show_photo_gallery", {method: "get", remote: true, id: "refresh_icon", class: "material-icons", onClick: "",data: {turbolinks: "false"} }%>
 
-<div class="test" >
+<div class="gallery_wrapper" >
     <%= render partial: "photo_gallery" , locals: { selected: @selected, words_array: @words_array, photourl: @photourl }%>
 </div>
 
 <%= render partial: "add_comment_form" , locals: {comment: @comment}%>
 
-<%= tag.ul class: "comment_list" do %>
   <% sorted = @comments.order("created_at DESC") %>
   <% sorted.each do |c| %>
     <%= render partial: "single_comment" , locals: {comment: c}%>
   <% end %>
+<%= tag.ul id: "comments_list" do %>
 <% end %>

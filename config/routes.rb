@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   post '/', to: 'photos#create_comment'
   patch '/', to: 'photos#create_comment'
   # get '/test', to: 'photos#test'
-  get '/show_photos_js', to: 'photos#show_photos_js'
+  get '/show_photo_gallery', to: 'photos#show_photo_gallery'
   # get '/comments/new', to: 'photos#new_comment'
 
   resources :comments
