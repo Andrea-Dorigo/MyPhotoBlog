@@ -69,7 +69,6 @@ class PhotosController < ApplicationController
 
   def get_photos(word)
     Rails.cache.fetch("photos_of_#{word}", expires_in: CACHE_EXPIRE_TIME) do
-      logger.debug "fetch photos of word: ==> #{word}"
       photos = search_photos(word)
       photo_array = []
       40.times do |k|
