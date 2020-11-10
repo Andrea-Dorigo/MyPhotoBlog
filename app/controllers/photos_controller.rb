@@ -48,7 +48,7 @@ class PhotosController < ApplicationController
   end
 
   def create_comment
-    @comments = Comment.all.order("created_at DESC")
+    load_data
     @comment = Comment.new(params.require(:comment).permit(:name, :email, :body, :word))
     words_string = params[:w]
     saved = @comment.save
