@@ -71,7 +71,7 @@ class PhotosController < ApplicationController
     Rails.cache.fetch("photos_of_#{word}", expires_in: CACHE_EXPIRE_TIME) do
       photos = search_photos(word)
       photo_array = []
-      40.times do |k|
+      PHOTO_MIN_RESULTS.times do |k|
         photo_array.push(photos[k])
       end
       photo_array
@@ -96,15 +96,15 @@ class PhotosController < ApplicationController
   def search_photos(word)
     photos_of = Rails.cache.fetch("photos_of_#{word}", expires_in: CACHE_EXPIRE_TIME) do
       logger.debug "photos_of_#{word} not found in cache"
-       url = "https://api.pexels.com/v1/search?query=#{word}&per_page=40"
+       url = "https://api.pexels.com/v1/search?query=#{word}&per_page=#{PHOTO_MIN_RESULTS}"
        pexels_key = ENV.fetch('PEXELS_API_KEY')
        response = Excon.get(url, headers: {'Authorization' => pexels_key } )
        return nil if response.status != 200
        photo = JSON.parse(response.body)
        photos_of_word = []
-       if photo["total_results"] >= 40
-        logger.debug "we have more than 40 results!"
-         40.times do |k|
+       if photo["total_results"] >= PHOTO_MIN_RESULTS
+        logger.debug "we have more than #{PHOTO_MIN_RESULTS} results!"
+         PHOTO_MIN_RESULTS.times do |k|
            photos_of_word.push(photo["photos"][k]["src"]["large2x"])
          end
          Rails.cache.write("photos_of_#{word}", photos_of_word, expires_in: CACHE_EXPIRE_TIME)
