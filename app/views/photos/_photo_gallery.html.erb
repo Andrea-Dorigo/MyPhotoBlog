@@ -1,0 +1,24 @@
+<ul class="random_words_list">
+  <% for i in 0..2 %>
+    <% if selected.to_i == i %>
+      <%= content_tag :li, class: ["random_word","selected"] do -%>
+        <%= link_to words_array[i], "/show_photo_gallery?s=#{i}&w=#{words_array[0]}|#{words_array[1]}|#{words_array[2]}", { method: "get", remote: true, id: "new", data: {turbolinks: "false" }} %>
+      <% end -%>
+    <% else %>
+      <%= content_tag :li, class: "random_word" do -%>
+        <%= link_to words_array[i], "/show_photo_gallery?s=#{i}&w=#{words_array[0]}|#{words_array[1]}|#{words_array[2]}", { method: "get", remote: true, data: {turbolinks: "false"} } %>
+      <% end -%>
+    <% end %>
+  <% end %>
+</ul>
+<div id="photo-gallery">
+  <% photo_url_index = selected.to_i*40 %>
+  <% for i in 0..7 do %>
+    <%= content_tag :div, class: ["carousel"], tabindex: "-1" do -%>
+     <% 5.times do %>
+       <%= image_tag photourl[photo_url_index.to_i] , :class => 'cell' %>
+       <% photo_url_index += 1 %>
+     <% end %>
+    <% end -%>
+  <% end %>
+</div>

@@ -1,0 +1,21 @@
+window.Rails = Rails;
+form_error = document.getElementById("form-error");
+if (form_error != null) {
+  form_error.outerHTML = "";
+}
+<% if comment.errors.messages.any? %>
+  document.getElementById("add_comment_form").innerHTML = ("<%= j (render partial: 'add_comment_form', locals: {comment: comment} ) %>");
+  <% logger.debug "error #{comment.errors.messages.keys}"%>
+<% else %>
+  document.getElementById('comments_list').innerHTML = ("<%= j (render partial: 'single_comment', locals: {comment: @comment, new: 'new' } ) %>") +
+   document.getElementById('comments_list').innerHTML;
+  form_fields = document.getElementsByTagName("fieldset")[0].children;
+  for (let i = 0; i < form_fields.length; i++) {
+    form_fields[i].classList.remove("wrong-field");
+  }
+  document.getElementById("<%= "comment_body" %>").value = "";
+  setTimeout(() => {
+    document.getElementsByClassName("new")[0].classList.remove("new");
+  }, 2000);
+
+<% end %>
