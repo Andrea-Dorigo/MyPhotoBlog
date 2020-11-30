@@ -10,6 +10,6 @@ document.getElementById('comments_list').innerHTML = ("<%= j (render partial:
    selected: @selected,
    words_array: @words_array
         } ) %>");
-document.getElementById("hidden_word").setAttribute("value", "<%= @words_array[@selected] %>");
+document.getElementById("hidden_word").setAttribute("value", "<%= @words_array[@selected].value %>");
 document.getElementById("refresh_icon").classList.remove("rotating");
 history.pushState("data","title"," <%= home_url + "?s=#{@selected}&w=#{@words_string}" %> ");

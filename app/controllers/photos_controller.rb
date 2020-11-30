@@ -27,6 +27,27 @@ class PhotosController < ApplicationController
     end
   end
 
+  def create_comment
+    load_data
+    word = Word.find_by(:value => params[:comment][:associated_word])
+    @comment = word.comments.new(params.require(:comment).permit(:name, :email, :body, :associated_word))
+    words_string = serialize_words(@words_array)
+    saved = @comment.save
+    if saved
+      cookies[:name] = @comment.name
+      cookies[:email] = @comment.email
+    end
+    respond_to do |format|
+      format.js {
+        render partial: "append_comment", locals: {comment: @comment, comments: @comments }
+      }
+      format.html {
+        @comment.body = "" if saved
+        redirect_to(home_url + "?s=#{params[:s]}&w=#{words_string}")
+      }
+    end
+  end
+
   def load_data
     require 'open-uri'
     uri  = URI.parse(request.fullpath)
