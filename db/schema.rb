@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_28_093731) do
+ActiveRecord::Schema.define(version: 2020_11_23_100349) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,7 +27,28 @@ ActiveRecord::Schema.define(version: 2020_08_28_093731) do
     t.text "body"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "word"
+    t.string "associated_word"
+    t.bigint "word_id"
+    t.index ["word_id"], name: "index_comments_on_word_id"
   end
 
+  create_table "pictures", force: :cascade do |t|
+    t.integer "width"
+    t.integer "height"
+    t.string "url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "word_id", null: false
+    t.index ["word_id"], name: "index_pictures_on_word_id"
+  end
+
+  create_table "words", force: :cascade do |t|
+    t.string "value"
+    t.datetime "generated_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  add_foreign_key "comments", "words"
+  add_foreign_key "pictures", "words"
 end
