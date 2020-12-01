@@ -13,8 +13,12 @@ class PhotosController < ApplicationController
   end
 
   def show_photo_gallery
+
     respond_to do |format|
       load_data
+      if @words_array.empty? #refresh button
+        3.times { @words_array.push(Word.search_word) }
+      end
       @words_string = serialize_words(@words_array)
        format.js {
          @words_array.each do |word|
@@ -22,7 +26,11 @@ class PhotosController < ApplicationController
          end
        }
        format.html {
-         redirect_to(home_url + "?s=#{params[:s]}&w=#{@words_string}")
+         unless params[:w].nil?
+           redirect_to(home_url + "?s=#{params[:s]}&w=#{@words_string}")
+         else
+           redirect_to(home_url)
+         end
        }
     end
   end
@@ -66,6 +74,7 @@ class PhotosController < ApplicationController
     @comment.name = cookies[:name]
     @comment.email = cookies[:email]
     @photourl = []
+      logger.debug "load data words_array: #{@words_array} params #{params[:w]} uri = #{uri}"
   end
 
   private def serialize_words(words_array)
