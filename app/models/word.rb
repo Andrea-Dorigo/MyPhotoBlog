@@ -4,7 +4,7 @@ class Word < ApplicationRecord
   has_many :pictures
 
   include HTTParty
-  
+
   PHOTO_MIN_RESULTS = 40 # minimum ammount of results necessary per word
 
   # si potrebbe utilizzare il new con una validazione che controlla se ci sono almeno 40 foto con un before_save
@@ -26,6 +26,7 @@ class Word < ApplicationRecord
        pexels_key = ENV.fetch('PEXELS_API_KEY')
        response = Excon.get(url, headers: {'Authorization' => pexels_key } )
        photo = JSON.parse(response.body)
+       return nil unless photo["total_results"]
        if photo["total_results"] >= PHOTO_MIN_RESULTS
          self.update(value: random_word, generated_at: Time.now)
          self.save!
