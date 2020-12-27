@@ -1,4 +1,5 @@
 class CreateWordsFromComments < ActiveRecord::Migration[6.0]
+  
   def change
 
     Comment.all.each do |c|
@@ -8,9 +9,9 @@ class CreateWordsFromComments < ActiveRecord::Migration[6.0]
           puts "word #{word.value} already present with id #{word.id}" if word
           unless word
             puts "word #{c.associated_word} not found"
-            word = Word.new
-            response = word.search_photos(c.associated_word)
-            puts "created Word #{word.value} with id = #{word.id}" if response
+            word = Word.create!(word: c.associated_word, generated_at: Time.now)
+            word.fetch_photos!
+            word.destroy unless word.photos
           end
           # c.word = word
           c.update(word: word) if response

@@ -13,13 +13,12 @@ class PhotosController < ApplicationController
   end
 
   def show_photo_gallery
-
+    load_data
+    if @words_array.empty? #refresh button
+      3.times { @words_array.push(Word.search_word) }
+    end
+    @words_string = serialize_words(@words_array)
     respond_to do |format|
-      load_data
-      if @words_array.empty? #refresh button
-        3.times { @words_array.push(Word.search_word) }
-      end
-      @words_string = serialize_words(@words_array)
        format.js {
          @words_array.each do |word|
            word.pictures.each { |p| @photourl.push(p.url) }
