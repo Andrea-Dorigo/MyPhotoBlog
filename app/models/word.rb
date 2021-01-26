@@ -14,16 +14,16 @@ class Word < ApplicationRecord
   validates :pictures, presence: true
   validate :pictures_count
 
-  # si potrebbe utilizzare il new con una validazione che controlla se ci sono almeno 40 foto con un before_save
   def self.search_word
     doc = HTTParty.get("https://www.randomlists.com/data/words.json")
     parsed = JSON.parse(doc.to_s)
-    word = Word.new
-    while word.value.nil?
+    flag = false
+    while flag == false
       random_word = "#{parsed["data"].sample}"
       found = Word.find_by(:value => random_word)
       return found if found
-      word.search_photos(random_word) 
+      word = Word.create(:value => random_word)
+      flag = found if word.id != nil
     end
     return word
   end
@@ -66,4 +66,3 @@ private
   end
 
 end
-

@@ -1,11 +1,13 @@
 class PhotosController < ApplicationController
 
   def index
+    Rails.logger.debug "DEBUG \n DEBUG >>> RELOADED \nDEBUG "
     load_data # @words_array, @selected, @comment, @comments, @photourl
     if @words_array.empty?
       3.times { @words_array.push(Word.search_word) }
       redirect_to(home_url + "?s=1&w=#{serialize_words(@words_array)}")
     else
+      logger.debug "DEBUG >>> index > words_array #{@words_array}"
       @words_array.each do |word|
         word.pictures.each { |p| @photourl.push(p.url) }
       end
@@ -77,6 +79,7 @@ class PhotosController < ApplicationController
   end
 
   private def serialize_words(words_array)
+    logger.debug "DEBUG >>> serialize_words > words_array = #{words_array}"
     return "#{@words_array[0].value}|#{@words_array[1].value}|#{@words_array[2].value}"
   end
 
