@@ -27,6 +27,7 @@ gem 'excon'
 gem 'actionpack-page_caching'
 gem 'actionpack-action_caching'
 gem 'jquery-rails'
+# gem 'rails-backup-migrate'
 
 # gem 'nokogiri'
 # Use Redis adapter to run Action Cable in production

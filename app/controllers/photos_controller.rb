@@ -1,41 +1,30 @@
 class PhotosController < ApplicationController
 
-  include HTTParty
-
-  PHOTO_MIN_RESULTS = 40 # minimum ammount of results necessary per word
-  CACHE_EXPIRE_TIME = (ENV.fetch('CACHE_EXPIRE_TIME')).to_i.minutes
-
   def index
+    Rails.logger.debug "DEBUG \n DEBUG >>> RELOADED \nDEBUG "
     load_data # @words_array, @selected, @comment, @comments, @photourl
-    logger.debug "words array === #{@words_array}"
     if @words_array.empty?
-      @words_array = get_words()
+      3.times { @words_array.push(Word.search_word) }
       redirect_to(home_url + "?s=1&w=#{serialize_words(@words_array)}")
     else
+      logger.debug "DEBUG >>> index > words_array #{@words_array}"
       @words_array.each do |word|
-        @photourl.push(get_photos(word))
+        word.pictures.each { |p| @photourl.push(p.url) }
       end
-      @photourl = @photourl.flatten
     end
   end
 
   def show_photo_gallery
+    load_data
+    if @words_array.empty? #refresh button
+      3.times { @words_array.push(Word.search_word) }
+    end
+    @words_string = serialize_words(@words_array)
     respond_to do |format|
-      @words_array = params[:w] ? params[:w].split("|") : []
-      @words_array = get_words() if @words_array.empty?
-      @comments = Comment.all.order("created_at DESC")
-      @photourl = []
-
-      @selected = params[:s].to_i
-
-
-      @words_string = serialize_words(@words_array)
        format.js {
          @words_array.each do |word|
-           @photourl.push(get_photos(word))
+           word.pictures.each { |p| @photourl.push(p.url) }
          end
-         @photourl = @photourl.flatten
-         @selected = params[:s].to_i || 1
        }
        format.html {
          unless params[:w].nil?
@@ -49,8 +38,9 @@ class PhotosController < ApplicationController
 
   def create_comment
     load_data
-    @comment = Comment.new(params.require(:comment).permit(:name, :email, :body, :word))
-    words_string = params[:w]
+    word = Word.find_by(:value => params[:comment][:associated_word])
+    @comment = word.comments.new(params.require(:comment).permit(:name, :email, :body, :associated_word))
+    words_string = serialize_words(@words_array)
     saved = @comment.save
     if saved
       cookies[:name] = @comment.name
@@ -67,66 +57,30 @@ class PhotosController < ApplicationController
     end
   end
 
-  def get_photos(word)
-    Rails.cache.fetch("photos_of_#{word}", expires_in: CACHE_EXPIRE_TIME) do
-      photos = search_photos(word)
-      photo_array = []
-      PHOTO_MIN_RESULTS.times do |k|
-        photo_array.push(photos[k])
-      end
-      photo_array
-    end
-  end
-
-  def get_words
-    words_array = []
-    doc = HTTParty.get("https://www.randomlists.com/data/words.json")
-    parsed = JSON.parse(doc.to_s)
-    i = 0
-    while i < 3
-      word = parsed["data"].sample
-      if search_photos(word) != []
-           i += 1
-           words_array.push(word)
-      end
-    end
-    return words_array
-  end
-
-  def search_photos(word)
-    photos_of = Rails.cache.fetch("photos_of_#{word}", expires_in: CACHE_EXPIRE_TIME) do
-      logger.debug "photos_of_#{word} not found in cache"
-       url = "https://api.pexels.com/v1/search?query=#{word}&per_page=#{PHOTO_MIN_RESULTS}"
-       pexels_key = ENV.fetch('PEXELS_API_KEY')
-       response = Excon.get(url, headers: {'Authorization' => pexels_key } )
-       return nil if response.status != 200
-       photo = JSON.parse(response.body)
-       photos_of_word = []
-       if photo["total_results"] >= PHOTO_MIN_RESULTS
-        logger.debug "we have more than #{PHOTO_MIN_RESULTS} results!"
-         PHOTO_MIN_RESULTS.times do |k|
-           photos_of_word.push(photo["photos"][k]["src"]["large2x"])
-         end
-         Rails.cache.write("photos_of_#{word}", photos_of_word, expires_in: CACHE_EXPIRE_TIME)
-       end
-       photos_of_word
-    end
-  end
-
   def load_data
     require 'open-uri'
     uri  = URI.parse(request.fullpath)
-    @words_array = params[:w] ? params[:w].split("|") : []
+    @words_array = []
+    # @words_array = params[:w] ? params[:w].split("|") : []
+    if params[:w]
+      splitted = params[:w].split("|")
+      splitted.each do |w|
+        found = Word.find_by(:value => "#{w}")
+        @words_array.push(found)
+      end
+    end
     @selected = params[:s].to_i || 1
     @comment = Comment.new
     @comments = Comment.all.order("created_at DESC")
     @comment.name = cookies[:name]
     @comment.email = cookies[:email]
     @photourl = []
+      logger.debug "load data words_array: #{@words_array} params #{params[:w]} uri = #{uri}"
   end
 
   private def serialize_words(words_array)
-    return "#{@words_array[0]}|#{@words_array[1]}|#{@words_array[2]}"
+    logger.debug "DEBUG >>> serialize_words > words_array = #{words_array}"
+    return "#{@words_array[0].value}|#{@words_array[1].value}|#{@words_array[2].value}"
   end
 
 end #PhotosController
