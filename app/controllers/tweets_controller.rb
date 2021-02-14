@@ -1,11 +1,12 @@
 class TweetsController < ApplicationController
 
+
+
    def index
      @tweets = Tweet.all
    end
 
    def show
-     @tweet = Tweet.find(params[:id])
    end
 
    def new
@@ -15,14 +16,17 @@ class TweetsController < ApplicationController
    def create
      @tweet = Tweet.new(tweet_params)
 
-     if @tweet.save
-       redirect_to :action => 'index'
-     else
-       render :action => 'new'
+     respond_to do |format|
+       if @tweet.save
+         format.html { redirect_to tweets_url, notice: 'Tweet was successfully created.' }
+         format.json { render :show, status: :created, location: @tweet }
+       else
+         format.turbo_stream { render turbo_stream: turbo_stream.replace(@tweet, partial: "tweets/form", locals: { tweet: @tweet}) }
+         format.html { render :new }
+         format.json { render json: @tweet.errors, status: :unprocessable_entity }
+       end
      end
-
    end
-
    def edit
    end
 
