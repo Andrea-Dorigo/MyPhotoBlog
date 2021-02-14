@@ -8,5 +8,5 @@ Rails.application.routes.draw do
   get '/show_photo_gallery', to: 'photos#show_photo_gallery'
   # get '/comments/new', to: 'photos#new_comment'
 
-  resources :comments
+  resources :comments, :tweets
 end
