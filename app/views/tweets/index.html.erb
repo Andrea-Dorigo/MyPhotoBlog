@@ -2,9 +2,6 @@
 
 <h1>Tweeter</h1>
 
-<%= render "tweets/form", tweet: @tweet %>
+<%= render @tweets %>
 
-<%= turbo_stream_from "tweets" %>
-<%= turbo_frame_tag "tweets" do %>
-  <%= render @tweets %>
-<% end %>
+<%= turbo_frame_tag "new_tweet", src: new_tweet_path, target: "_top" %>

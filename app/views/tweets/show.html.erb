@@ -1,5 +1,13 @@
 <p id="notice"><%= notice %></p>
 
-<%= turbo_frame_tag dom_id(@tweet) do %>
-  <%= render @tweet %>
+
+
+<div id="tweets">
+  <p>show</p>
+  <%= render @tweets %>
+</div>
+
+<%= turbo_frame_tag "new_tweet", src: new_tweet_path, target: "_top" do %>
+  <p>nothing ever happens</p>
+  <% link_to "New message", new_tweet_path %>
 <% end %>
