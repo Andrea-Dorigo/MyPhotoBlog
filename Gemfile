@@ -8,11 +8,11 @@ gem 'rails', '~> 6.1.2', '>= 6.1.2.1'
 # Use sqlite3 as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 # Use Puma as the app server
-gem 'puma', '~> 4.1'
+gem 'puma', '~> 5.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem 'webpacker', '~> 4.0'
+# gem 'webpacker', '~> 4.0'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 #
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -24,7 +24,7 @@ gem 'dotenv-rails', groups: [:development, :test]
 
 gem 'excon'
 
-gem 'jquery-rails'
+# gem 'jquery-rails'
 
 gem 'hotwire-rails'
 # gem 'rails-backup-migrate'
