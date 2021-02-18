@@ -2,9 +2,11 @@
 <h1>Photo Blog</h1>
 <%=link_to "refresh", "/show_photo_gallery", {method: "get", remote: true, id: "refresh_icon", class: "material-icons", onClick: "",data: {turbolinks: "false"} }%>
 
-<div class="gallery_wrapper" >
-    <%= render partial: "photo_gallery" , locals: { selected: @selected, words_array: @words_array, photourl: @photourl }%>
-</div>
+<%= turbo_frame_tag 'image_gallery' do %>
+  <div class="gallery_wrapper" >
+      <%= render partial: "photo_gallery" , locals: { selected: @selected, words_array: @words_array, photourl: @photourl }%>
+  </div>
+<% end %>
 
 <%= render partial: "add_comment_form" , locals: {comment: @comment, words_array: @words_array, selected: @selected} %>
 
