@@ -1,7 +1,7 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Tweeter</h1>
+<h1>Tweets</h1>
 
-<%= render @tweets %>
+<br>
 
-<%= turbo_frame_tag "new_tweet", src: new_tweet_path, target: "_top" %>
+<%= turbo_frame_tag 'new_tweet', src: new_tweet_path %>

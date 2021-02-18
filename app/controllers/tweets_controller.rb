@@ -7,14 +7,16 @@ class TweetsController < ApplicationController
    end
 
    def show
-
+     puts "SHOW"
    end
 
    def new
+     puts "NEW"
      @tweet = Tweet.new
    end
 
    def create
+     puts "CREATE"
      @tweet = Tweet.new(tweet_params)
 
      respond_to do |format|
