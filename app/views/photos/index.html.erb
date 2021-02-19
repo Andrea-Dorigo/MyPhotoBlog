@@ -11,5 +11,7 @@
 <%= render partial: "add_comment_form" , locals: {comment: @comment, words_array: @words_array, selected: @selected} %>
 
 <%= tag.ul id: "comments_list" do %>
-  <%= render partial: "comments_list" , locals: {comments: @comments, selected: @selected, words_array: @words_array} %>
+  <%#= render partial: "comments_list" , locals: {comments: @comments, selected: @selected, words_array: @words_array} %>
+  <% word = @words_array[@selected] %>
+  <%= render word.comments %>
 <% end %>

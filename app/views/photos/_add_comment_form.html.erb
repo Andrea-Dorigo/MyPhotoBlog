@@ -1,5 +1,5 @@
 
-<%= form_for comment,  :html => {:id => "add_comment_form", remote: "true"}, url: "#{comment.errors.messages.keys.any? ? request.fullpath : request.fullpath+"#form-error"}" do |c| %>
+<%= form_for comment,  :html => {:id => "add_comment_form"}, url: "#{comment.errors.messages.keys.any? ? request.fullpath : request.fullpath+"#form-error"}" do |c| %>
   <% if comment.errors.messages.any? %>
     <%= tag.div id:"form-error", class: "error-message" do %>
     <%= tag.p do %>
@@ -20,8 +20,8 @@
       <% if comment.name.nil? %>
         <%= tag.p "This site uses technical cookies to remember your Name and Email.", class: "cookie_notice" %>
       <% end %>
-      <%= c.hidden_field :associated_word, :value => @words_array[@selected].value, :id => "hidden_word" %> 
-      <%= c.submit(id: "comment_submit", value: "Add this comment", remote: true, data: {disable_with: false, turbolinks: false}) %>
+      <%= c.hidden_field :associated_word, :value => @words_array[@selected].value, :id => "hidden_word" %>
+      <%= c.submit(id: "comment_submit", value: "Add this comment", remote: true, data: {disable_with: false}) %>
   </fieldset>
 
 <% end %>

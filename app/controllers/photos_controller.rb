@@ -47,6 +47,10 @@ class PhotosController < ApplicationController
       cookies[:email] = @comment.email
     end
     respond_to do |format|
+      format.turbo_stream {
+         puts "DEBUG>>> TURBO STREAM"
+         render "create_comment"
+       }
       format.js {
         render partial: "append_comment", locals: {comment: @comment, comments: @comments }
       }
