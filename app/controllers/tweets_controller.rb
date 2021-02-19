@@ -17,18 +17,21 @@ class TweetsController < ApplicationController
 
    def create
      puts "CREATE"
-     @tweet = Tweet.new(tweet_params)
+     @tweet = Tweet.create!(tweet_params)
 
      respond_to do |format|
-       if @tweet.save
-         format.html {  }
-         format.json { render :show, status: :created, location: @tweet }
-       else
-         # format.turbo_stream { render turbo_stream: turbo_stream.replace(@tweet, partial: "tweets/form", locals: { tweet: @tweet}) }
-         # format.html { render :new }
-         format.json { render json: @tweet.errors, status: :unprocessable_entity }
-       end
+       format.turbo_stream
      end
+     # respond_to do |format|
+     #   if @tweet.save
+     #     format.html {  }
+     #     format.json { render :show, status: :created, location: @tweet }
+     #   else
+     #     # format.turbo_stream { render turbo_stream: turbo_stream.replace(@tweet, partial: "tweets/form", locals: { tweet: @tweet}) }
+     #     # format.html { render :new }
+     #     format.json { render json: @tweet.errors, status: :unprocessable_entity }
+     #   end
+     # end
    end
    def edit
    end
@@ -43,6 +46,6 @@ class TweetsController < ApplicationController
 
 
    def tweet_params
-     params.permit(:body)
+     params.require(:tweet).permit(:body)
    end
 end

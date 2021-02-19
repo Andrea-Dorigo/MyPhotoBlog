@@ -2,6 +2,10 @@
 
 <h1>Tweets</h1>
 
+<div id="tweets">
+  <%= render @tweets %>
+</div>
+
 <br>
 
 <%= turbo_frame_tag 'new_tweet', src: new_tweet_path %>
