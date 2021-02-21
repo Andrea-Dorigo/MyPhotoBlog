@@ -1,13 +1,21 @@
-<%= turbo_frame_tag 'image_gallery' do %>
+<%#= turbo_frame_tag 'image_gallery' do %>
+
+
+
+  <!-- <form action="/show_photo_gallery?s=1&w=verdant|ski|smiling" data-turbo-frame="test">
+    Submitting form will replace the test frame.
+    <input type="submit">
+  </form> -->
+
   <ul class="random_words_list">
     <% for i in 0..2 %>
       <% if selected.to_i == i %>
         <%= content_tag :li, class: ["random_word","selected"] do -%>
-          <%= link_to words_array[i].value, "/show_photo_gallery?s=#{i}&w=#{words_array[0].value}|#{words_array[1].value}|#{words_array[2].value}", { method: "get", remote: true, id: "new", data: {turbolinks: "false" }} %>
+          <%= link_to words_array[i].value, "/show_photo_gallery?s=#{i}&w=#{words_array[0].value}|#{words_array[1].value}|#{words_array[2].value}", {remote: true, id: "new"} %>
         <% end -%>
       <% else %>
         <%= content_tag :li, class: "random_word" do -%>
-          <%= link_to words_array[i].value, "/show_photo_gallery?s=#{i}&w=#{words_array[0].value}|#{words_array[1].value}|#{words_array[2].value}", { method: "get", remote: true, data: {turbolinks: "false"} } %>
+          <%= link_to words_array[i].value, "show_photo_gallery", remote: true %>
         <% end -%>
       <% end %>
     <% end %>
@@ -23,4 +31,4 @@
       <% end -%>
     <% end %>
   </div>
-<% end %>
+<%# end %>

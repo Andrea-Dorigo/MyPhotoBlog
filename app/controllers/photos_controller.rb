@@ -21,6 +21,9 @@ class PhotosController < ApplicationController
     end
     @words_string = serialize_words(@words_array)
     respond_to do |format|
+       format.turbo_stream {
+         puts "TURBO STREAM"
+       }
        format.js {
          @words_array.each do |word|
            word.pictures.each { |p| @photourl.push(p.url) }
