@@ -8,7 +8,10 @@ require("@rails/activestorage").start()
 require("channels")
 
 require("packs/custom")
+require("packs/jquery-3.5.1.min")
 
+//= require jquery
+//= require jquery_ujs
 //= require_tree .
 
 

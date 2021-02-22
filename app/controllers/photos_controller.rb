@@ -23,18 +23,20 @@ class PhotosController < ApplicationController
     respond_to do |format|
        format.turbo_stream {
          puts "TURBO STREAM"
+         render "show_photo_gallery"
        }
-       format.js {
-         @words_array.each do |word|
-           word.pictures.each { |p| @photourl.push(p.url) }
-         end
-       }
+       # format.js {
+       #   @words_array.each do |word|
+       #     word.pictures.each { |p| @photourl.push(p.url) }
+       #   end
+       # }
        format.html {
-         unless params[:w].nil?
-           redirect_to(home_url + "?s=#{params[:s]}&w=#{@words_string}")
-         else
-           redirect_to(home_url)
-         end
+         puts "actually processed as HTML"
+         # unless params[:w].nil?
+         #   redirect_to(home_url + "?s=#{params[:s]}&w=#{@words_string}")
+         # else
+         #   redirect_to(home_url)
+         # end
        }
     end
   end

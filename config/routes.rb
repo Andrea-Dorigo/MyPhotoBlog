@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   patch '/', to: 'photos#create_comment'
   # get '/test', to: 'photos#test'
   get '/show_photo_gallery', to: 'photos#show_photo_gallery'
+  post '/show_photo_gallery', to: 'photos#show_photo_gallery'
   # get '/comments/new', to: 'photos#new_comment'
 
   resources :comments, :tweets
