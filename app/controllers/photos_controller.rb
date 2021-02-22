@@ -23,6 +23,10 @@ class PhotosController < ApplicationController
     respond_to do |format|
        format.turbo_stream {
          puts "TURBO STREAM"
+           @words_array.each do |word|
+             word.pictures.each { |p| @photourl.push(p.url) }
+           end
+
          render "show_photo_gallery"
        }
        # format.js {

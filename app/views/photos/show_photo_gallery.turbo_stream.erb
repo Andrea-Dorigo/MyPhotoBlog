@@ -1,2 +1,3 @@
-<%  puts "processed as turbo stream" %>
-<%= turbo_stream.remove "photo-gallery" %>
+<%= turbo_stream.update "gallery_wrapper" do %>
+  <%= render "photo_gallery" %>
+<% end %>

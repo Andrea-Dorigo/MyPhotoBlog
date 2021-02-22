@@ -9,6 +9,10 @@
 
   <ul class="random_words_list">
     <% for i in 0..2 %>
+      <!-- MOLTO MALE --> 
+      <% selected = @selected %>
+      <% words_array = @words_array %>
+      <% photourl = @photourl %>
       <% if selected.to_i == i %>
         <%= content_tag :li, class: ["random_word","selected"] do -%>
           <%= link_to words_array[i].value, "/show_photo_gallery?s=#{i}&w=#{words_array[0].value}|#{words_array[1].value}|#{words_array[2].value}", {remote: true, id: "new"} %>
