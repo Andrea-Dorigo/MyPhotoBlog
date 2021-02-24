@@ -1,5 +1,5 @@
 
-<%= form_for comment,  :html => {:id => "add_comment_form"}, url: "#{comment.errors.messages.keys.any? ? request.fullpath : request.fullpath+"#form-error"}" do |c| %>
+<%= form_for @comment,  :html => {:id => "add_comment_form"}, url: "#{comment.errors.messages.keys.any? ? "c"+ request.fullpath : "c"+request.fullpath+"#form-error"}" do |c| %>
   <% if comment.errors.messages.any? %>
     <%= tag.div id:"form-error", class: "error-message" do %>
     <%= tag.p do %>
