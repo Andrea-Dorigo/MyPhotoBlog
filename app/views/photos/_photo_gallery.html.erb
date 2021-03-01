@@ -6,7 +6,7 @@
       <% photourl = @photourl %>
       <% if selected.to_i == i %>
         <%= content_tag :li, class: ["random_word","selected"] do -%>
-          <%= link_to words_array[i].value, "/?s=#{i}&w=#{words_array[0].value}|#{words_array[1].value}|#{words_array[2].value}", { id: "new",  data: {controller: "url", action: "url#connect", method: "POST" }} %>
+          <%= link_to words_array[i].value, "/?s=#{i}&w=#{words_array[0].value}|#{words_array[1].value}|#{words_array[2].value}", { id: "new",  data: {controller: "pushstate_refresh", action: "pushstate_refresh#connect", method: "POST" }} %>
         <% end -%>
       <% else %>
         <%= content_tag :li, class: "random_word" do -%>
