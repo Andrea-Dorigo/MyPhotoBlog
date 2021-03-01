@@ -13,5 +13,5 @@
 <%= tag.ul id: "comments_list" do %>
   <%#= render partial: "comments_list" , locals: {comments: @comments, selected: @selected, words_array: @words_array} %>
   <% word = @words_array[@selected] %>
-  <%= render word.comments %>
+  <%= render word.comments.order("created_at DESC")%>
 <% end %>
