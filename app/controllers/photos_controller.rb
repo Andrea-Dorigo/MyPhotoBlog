@@ -5,7 +5,7 @@ class PhotosController < ApplicationController
     load_data # @words_array, @selected, @comment, @comments, @photourl
     if @words_array.empty?
       3.times { @words_array.push(Word.search_word) }
-      redirect_to(home_url + "?s=1&w=#{serialize_words(@words_array)}")
+      redirect_to(home_url + "show?s=1&w=#{serialize_words(@words_array)}")
     else
       logger.debug "DEBUG >>> index > words_array #{@words_array}"
       @words_array.each do |word|
@@ -36,11 +36,15 @@ class PhotosController < ApplicationController
        # }
        format.html {
          puts "actually processed as HTML"
+         @words_array.each do |word|
+           word.pictures.each { |p| @photourl.push(p.url) }
+         end
          # unless params[:w].nil?
-         #   redirect_to(home_url + "?s=#{params[:s]}&w=#{@words_string}")
+         #   redirect_to(home_url + "show?s=#{params[:s]}&w=#{@words_string}")
          # else
          #   redirect_to(home_url)
          # end
+         render "index"
        }
     end
   end
@@ -58,14 +62,14 @@ class PhotosController < ApplicationController
     respond_to do |format|
       format.turbo_stream {
          puts "DEBUG>>> TURBO STREAM"
-         render "create_comment"
        }
-      format.js {
-        render partial: "append_comment", locals: {comment: @comment, comments: @comments }
-      }
+      # format.js {
+      #   render partial: "append_comment", locals: {comment: @comment, comments: @comments }
+      # }
       format.html {
-        @comment.body = "" if saved
-        redirect_to(home_url + "?s=#{params[:s]}&w=#{words_string}")
+        logger.debug "DEBUG>>> CREATE COMMENT HTML RESPONSE"
+        # @comment.body = "" if saved
+        # redirect_to(home_url + "?s=#{params[:s]}&w=#{words_string}")
       }
     end
   end

@@ -1,12 +1,12 @@
-// window.Rails = Rails;
-// form_error = document.getElementById("form-error");
-// if (form_error != null) {
-//   form_error.outerHTML = "";
-// }
-// <% if comment.errors.messages.any? %>
-//   document.getElementById("add_comment_form").innerHTML = ("<%= j (render partial: 'add_comment_form', locals: {comment: comment} ) %>");
-//   <% logger.debug "error #{comment.errors.messages.keys}"%>
-// <% else %>
-//   document.getElementById('comments_list').innerHTML = ("<%= j (render partial: 'single_comment', locals: {comment: @comment} ) %>") + document.getElementById('comments_list').innerHTML;
-//   document.getElementById("add_comment_form").innerHTML = ("<%= j (render partial: 'add_comment_form', locals: {comment: Comment.new} ) %>");
-// <% end %>
+window.Rails = Rails;
+form_error = document.getElementById("form-error");
+if (form_error != null) {
+  form_error.outerHTML = "";
+}
+<% if comment.errors.messages.any? %>
+  document.getElementById("add_comment_form").innerHTML = ("<%= j (render partial: 'add_comment_form', locals: {comment: comment} ) %>");
+  <% logger.debug "error #{comment.errors.messages.keys}"%>
+<% else %>
+  document.getElementById('comments_list').innerHTML = ("<%= j (render partial: 'single_comment', locals: {comment: @comment} ) %>") + document.getElementById('comments_list').innerHTML;
+  document.getElementById("add_comment_form").innerHTML = ("<%= j (render partial: 'add_comment_form', locals: {comment: Comment.new} ) %>");
+<% end %>
