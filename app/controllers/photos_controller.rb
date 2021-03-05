@@ -5,7 +5,7 @@ class PhotosController < ApplicationController
     load_data # @words_array, @selected, @comment, @comments, @photourl
     if @words_array.empty?
       3.times { @words_array.push(Word.search_word) }
-      redirect_to(home_url + "show?s=1&w=#{serialize_words(@words_array)}")
+      redirect_to(home_url + "?s=1&w=#{serialize_words(@words_array)}")
     else
       logger.debug "DEBUG >>> index > words_array #{@words_array}"
       @words_array.each do |word|
@@ -20,6 +20,7 @@ class PhotosController < ApplicationController
       3.times { @words_array.push(Word.search_word) }
     end
     @words_string = serialize_words(@words_array)
+    puts "WORDS STRING CONTROLLER = #{@words_string}"
     respond_to do |format|
        format.turbo_stream {
          puts "TURBO STREAM"
@@ -53,7 +54,7 @@ class PhotosController < ApplicationController
     load_data
     word = Word.find_by(:value => params[:comment][:associated_word])
     @comment = word.comments.new(params.require(:comment).permit(:name, :email, :body, :associated_word))
-    words_string = serialize_words(@words_array)
+    @words_string = serialize_words(@words_array)
     saved = @comment.save
     if saved
       cookies[:name] = @comment.name
@@ -68,8 +69,8 @@ class PhotosController < ApplicationController
       # }
       format.html {
         logger.debug "DEBUG>>> CREATE COMMENT HTML RESPONSE"
-        # @comment.body = "" if saved
-        # redirect_to(home_url + "?s=#{params[:s]}&w=#{words_string}")
+        @comment.body = "" if saved
+        redirect_to(home_url + "?s=#{params[:s]}&w=#{words_string}")
       }
     end
   end
@@ -91,13 +92,16 @@ class PhotosController < ApplicationController
     @comments = Comment.all.order("created_at DESC")
     @comment.name = cookies[:name]
     @comment.email = cookies[:email]
+    unless @words_array.empty? #refresh button
+      @words_string = serialize_words(@words_array)
+    end
     @photourl = []
-      logger.debug "load data words_array: #{@words_array} params #{params[:w]} uri = #{uri}"
+    logger.debug "load data words_array: #{@words_array} params #{params[:w]} uri = #{uri}"
   end
 
   private def serialize_words(words_array)
     logger.debug "DEBUG >>> serialize_words > words_array = #{words_array}"
-    return "#{@words_array[0].value}|#{@words_array[1].value}|#{@words_array[2].value}"
+    return "#{words_array[0].value}|#{words_array[1].value}|#{words_array[2].value}"
   end
 
 end #PhotosController

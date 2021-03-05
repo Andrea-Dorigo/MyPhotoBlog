@@ -1,6 +1,7 @@
 <% comment = @comment %>
+<% puts "STRING = #{@words_string}" %>
 <% puts "COMMENT ERROR #{comment.errors.messages}" %>
-<%= form_for @comment,  :html => {:id => "add_comment_form", :data => {controller: "submit_form", action: "turbo:submit-end->submit_form#submit"}}, url: "#{comment.errors.messages.keys.any? ? request.fullpath : request.fullpath+"#form-error"}" do |c| %>
+<%= form_for @comment,  :html => {:id => "add_comment_form", :data => {controller: "submit_form", action: "turbo:submit-end->submit_form#submit"}}, url: create_comment_photos_path({s: @selected, w: @words_string }) do |c| %>
   <% if comment.errors.messages.any? %>
     <%= tag.div id:"form-error", class: "error-message" do %>
     <%= tag.p do %>
