@@ -13,6 +13,7 @@ require("packs/jquery-3.5.1.min")
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
+//= require turbolinks
 
 
 import "controllers"

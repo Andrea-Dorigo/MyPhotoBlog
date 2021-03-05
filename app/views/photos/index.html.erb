@@ -1,6 +1,6 @@
 
 <h1>Photo Blog</h1>
-<%=link_to "refresh", "/", { id: "refresh_icon", class: "material-icons", data: {controller: "pushstate", action: "pushstate#push"}}%>
+<%=link_to "refresh", "/", { id: "refresh_icon", class: "material-icons", data: {turbolinks: true}}%>
 
 <%#= turbo_frame_tag 'image_gallery' do %>
   <div id="gallery_wrapper" class="gallery_wrapper">
