@@ -2,16 +2,13 @@
 <h1>Photo Blog</h1>
 <%=link_to "refresh", "/", { id: "refresh_icon", class: "material-icons", data: {turbolinks: true, controller: "refresh", action: "refresh#rotate"}}%>
 
-<%#= turbo_frame_tag 'image_gallery' do %>
-  <div id="gallery_wrapper" class="gallery_wrapper">
-      <%= render partial: "photo_gallery" , locals: { selected: @selected, words_array: @words_array, photourl: @photourl }%>
-  </div>
-<%# end %>
+<div id="gallery_wrapper" class="gallery_wrapper">
+    <%= render partial: "photo_gallery" , locals: { selected: @selected, words_array: @words_array, photourl: @photourl }%>
+</div>
 
 <%= render partial: "add_comment_form" , locals: {comment: @comment, words_array: @words_array, selected: @selected} %>
 
 <%= tag.ul id: "comments_list" do %>
-  <%#= render partial: "comments_list" , locals: {comments: @comments, selected: @selected, words_array: @words_array} %>
   <% word = @words_array[@selected] %>
   <%= render word.comments.order("created_at DESC")%>
 <% end %>
