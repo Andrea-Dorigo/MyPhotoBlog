@@ -16,21 +16,16 @@ class PhotosController < ApplicationController
     load_data
     if @words_array.empty? #refresh button
       3.times { @words_array.push(Word.search_word) }
+    else
+      @words_array.each do |word|
+        word.pictures.each { |p| @photourl.push(p.url) }
+      end
     end
     @words_string = serialize_words(@words_array)
+
     respond_to do |format|
-       format.turbo_stream {
-           @words_array.each do |word|
-             word.pictures.each { |p| @photourl.push(p.url) }
-           end
-         render "show_photo_gallery"
-       }
-       format.html {
-         @words_array.each do |word|
-           word.pictures.each { |p| @photourl.push(p.url) }
-         end
-         render "index"
-       }
+       format.turbo_stream  {}
+       format.html          {render "index"}
     end
   end
 
@@ -48,7 +43,7 @@ class PhotosController < ApplicationController
       format.turbo_stream {}
       format.html {
         @comment.body = "" if saved
-        redirect_to(home_url + "?s=#{params[:s]}&w=#{words_string}")
+        redirect_to(home_url + "?s=#{params[:s]}&w=#{@words_string}")
       }
     end
   end
