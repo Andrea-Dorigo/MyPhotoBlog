@@ -1,12 +1,10 @@
-<% comment = @comment %>
-<% puts "STRING = #{@words_string}" %>
-<% puts "COMMENT ERROR #{@comment.errors.messages}" %>
-<%= form_for @comment,  :html => {:id => "add_comment_form", :data => {controller: "submit_form", action: "turbo:submit-end->submit_form#submit"}}, url: create_comment_photos_path({s: @selected, w: @words_string }) do |c| %>
-  <% if @comment.errors.messages.any? %>
+<% errors = flash[:error] ? flash[:error] : @comment.errors.messages.keys %>
+<%= form_for @comment,  url: create_comment_photos_path({s: @selected, w: @words_string }), :html => {:id => "add_comment_form", :method => "POST" ,:data => {controller: "submit_form", action: "turbo:submit-end->submit_form#submit"}} do |c| %>
+  <% if errors.any? %>
     <%= tag.div id:"form-error", class: "error-message" do %>
     <%= tag.p do %>
       Couldn't post the comment because the following required fields are missing or invalid:
-      <%@comment.errors.messages.keys.each do |e|%>
+      <% errors.each do |e|%>
       &middot<%= "#{e}" %>
     <% end %>
       <% end %>
@@ -14,12 +12,12 @@
   <% end %>
   <fieldset>
     <legend class="form_title"><h2>Add a Comment</h2></legend>
-      <%= c.text_field(:name,  placeholder: 'Name', class: (comment.errors.messages.keys.include?(:name) ? 'wrong-field': 'right_field'), value: comment.name || cookies[:name] )%>
-      <%= c.text_field(:email,  placeholder: 'Email address', class: (comment.errors.messages.keys.include?(:email) ? 'wrong-field': 'right_field'), value: comment.email || cookies[:email]) %>
-      <%= c.text_area(:body,  placeholder: 'Your Comment', class: (comment.errors.messages.keys.include?(:body) ? 'wrong-field': 'right_field'), value: comment.body )%>
+      <%= c.text_field(:name,  placeholder: 'Name', class: (errors.include?(:name) ? 'wrong-field': 'right_field'), value: @comment.name || cookies[:name] )%>
+      <%= c.text_field(:email,  placeholder: 'Email address', class: (errors.include?(:email) ? 'wrong-field': 'right_field'), value: @comment.email || cookies[:email]) %>
+      <%= c.text_area(:body,  placeholder: 'Your Comment', class: (errors.include?(:body) ? 'wrong-field': 'right_field'), value: @comment.body )%>
       <%= check_box_tag(:remember_me, 0,true) %>
       <%= label_tag(:remember_me, "Remember me") %>
-      <% if comment.name.nil? %>
+      <% if @comment.name.nil? %>
         <%= tag.p "This site uses technical cookies to remember your Name and Email.", class: "cookie_notice" %>
       <% end %>
       <%= c.hidden_field :associated_word, :value => @words_array[@selected].value, :id => "hidden_word" %>

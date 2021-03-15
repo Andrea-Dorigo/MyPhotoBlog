@@ -43,7 +43,8 @@ class PhotosController < ApplicationController
       format.turbo_stream {}
       format.html {
         @comment.body = "" if saved
-        redirect_to(home_url + "?s=#{params[:s]}&w=#{@words_string}")
+        flash[:error] = @comment.errors.messages.keys
+        redirect_to(home_url + "?s=#{params[:s]}&w=#{@words_string}#form-error" )
       }
     end
   end
@@ -61,6 +62,9 @@ class PhotosController < ApplicationController
       end
     end
     @selected = params[:s].to_i || 1
+    comment = @comment
+    puts "LOAD DATA #{comment}"
+
     @comment = Comment.new
     @comments = Comment.all.order("created_at DESC")
     @comment.name = cookies[:name]

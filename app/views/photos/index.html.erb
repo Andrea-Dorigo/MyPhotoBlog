@@ -5,7 +5,7 @@
 <div id="gallery_wrapper" class="gallery_wrapper">
     <%= render partial: "photo_gallery" , locals: { selected: @selected, words_array: @words_array, photourl: @photourl }%>
 </div>
-
+<% puts "INDEX ------> #{@comment.errors.messages}" %>
 <%= render partial: "add_comment_form" , locals: {comment: @comment, words_array: @words_array, selected: @selected} %>
 
 <%= tag.ul id: "comments_list" do %>
