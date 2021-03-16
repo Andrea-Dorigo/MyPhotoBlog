@@ -1,5 +1,5 @@
 <% errors = flash[:error] ? flash[:error] : @comment.errors.messages.keys %>
-<%= form_for @comment,  url: create_comment_photos_path({s: @selected, w: @words_string }), :html => {:id => "add_comment_form", :method => "POST" ,:data => {controller: "submit_form", action: "turbo:submit-end->submit_form#submit"}} do |c| %>
+<%= form_for @comment,  url: create_comment_photos_path({s: @selected, w: @words_string }), :html => {:id => "add_comment_form", :method => "POST" } do |c| %>
   <% if errors.any? %>
     <%= tag.div id:"form-error", class: "error-message" do %>
     <%= tag.p do %>

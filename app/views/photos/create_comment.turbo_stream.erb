@@ -1,8 +1,7 @@
-<% if @comment.errors.any? %>
-  <%= turbo_stream.replace "add_comment_form" do %>
-    <% render "add_comment_form" %>
-  <% end %>
-<% else %>
+<%= turbo_stream.replace "add_comment_form" do %>
+  <% render "add_comment_form" %>
+<% end %>
+<% unless @comment.errors.any? %>
   <%= turbo_stream.prepend "comments_list", @comment %>
   <% @comment = Comment.new %>
   <%= turbo_stream.replace "add_comment_form" do %>
