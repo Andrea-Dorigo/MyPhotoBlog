@@ -6,7 +6,7 @@
     <%= render partial: "photo_gallery" %>
 </div>
 <% puts "INDEX ------> #{@comment.errors.messages}" %>
-<%= render partial: "add_comment_form" , locals: {comment: @comment, words_array: @words_array, selected: @selected} %>
+<%= render partial: "add_comment_form" %>
 
 <%= tag.ul id: "comments_list" do %>
   <% word = @words_array[@selected] %>
