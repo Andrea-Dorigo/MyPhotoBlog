@@ -3,7 +3,7 @@
 <%=link_to "refresh", "/", { id: "refresh_icon", class: "material-icons", data: {turbolinks: true, controller: "refresh", action: "refresh#rotate"}}%>
 
 <div id="gallery_wrapper" class="gallery_wrapper">
-    <%= render partial: "photo_gallery" , locals: { selected: @selected, words_array: @words_array, photourl: @photourl }%>
+    <%= render partial: "photo_gallery" %>
 </div>
 <% puts "INDEX ------> #{@comment.errors.messages}" %>
 <%= render partial: "add_comment_form" , locals: {comment: @comment, words_array: @words_array, selected: @selected} %>
