@@ -1,18 +1,14 @@
   <ul class="random_words_list">
+    <% s = @selected.to_i %>
     <% for i in 0..2 %>
-      <% if @selected.to_i == i %>
-        <%= content_tag :li, class: ["random_word","selected"] do -%>
-          <%= link_to @words_array[i].value, "/?s=#{i}&w=#{@words_array[0].value}|#{@words_array[1].value}|#{@words_array[2].value}", { :controller => :photos, :action => :show_photo_gallery, method: "POST", id: "new" , data: {controller: "set_attribute", action: "set_attribute#connect"} } %>
-        <% end -%>
-      <% else %>
-        <%= content_tag :li, class: "random_word" do -%>
-          <%= link_to @words_array[i].value, "/?s=#{i}&w=#{@words_array[0].value}|#{@words_array[1].value}|#{@words_array[2].value}" %>
-        <% end -%>
-      <% end %>
+      <%= content_tag :li, class: ['random_word', ('selected' if (s == i) )] do -%>
+        <%= link_to @words_array[i].value, "/?s=#{i}&w=#{@words_string}", { :controller => (:photos if (s == i)), :action => (:show_photo_gallery if (s == i)) , id: ('new' if (s == i)), method: ("POST" if (s == i)) , data: ({controller: "set_attribute", action: "set_attribute#connect"} if (s == i))  } %>
+      <% end -%>
     <% end %>
   </ul>
+
   <div id="photo-gallery">
-    <% photo_url_index = @selected.to_i*40 %>
+    <% photo_url_index = s*40 %>
     <% for i in 0..7 do %>
       <%= content_tag :div, class: ["carousel"], tabindex: "-1" do -%>
        <% 5.times do %>
@@ -22,3 +18,31 @@
       <% end -%>
     <% end %>
   </div>
+
+
+
+
+<%
+=begin%>
+ <li class="random_word selected">
+  <a controller="photos" action="show_photo_gallery" id="new" data-controller="set_attribute" data-action="set_attribute#connect" rel="nofollow" data-method="POST" href="/?s=0&amp;w=amazing|volleyball|brother">amazing</a>
+</li>
+<li class="random_word">
+  <a controller="photos" action="show_photo_gallery" rel="nofollow" data-method="POST" href="/?s=1&amp;w=amazing|volleyball|brother">volleyball</a>
+</li>
+<li class="random_word">
+  <a controller="photos" action="show_photo_gallery" rel="nofollow" data-method="POST" href="/?s=2&amp;w=amazing|volleyball|brother">brother</a>
+</li>
+
+
+<li class="random_word selected">
+  <a controller="photos" action="show_photo_gallery" id="new" data-controller="set_attribute" data-action="set_attribute#connect" rel="nofollow" data-method="POST" href="/?s=0&amp;w=bump|van|strange">van</a>
+</li>
+<li class="random_word">
+  <a controller="photos" action="show_photo_gallery" rel="nofollow" data-method="POST" href="/?s=1&amp;w=bump|van|strange">bump</a>
+</li>
+<li class="random_word">        
+  <a controller="photos" action="show_photo_gallery" rel="nofollow" data-method="POST" href="/?s=2&amp;w=bump|van|strange">strange</a>
+</li> 
+<%
+=end%>
