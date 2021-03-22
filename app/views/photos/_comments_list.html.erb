@@ -1,5 +1,0 @@
-<% comments.each do |c| %>
-  <% if c.word == words_array[selected] %>
-    <%= render partial: "single_comment" , locals: {comment: c}%>
-  <% end %>
-<% end %>

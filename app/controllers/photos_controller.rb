@@ -1,13 +1,11 @@
 class PhotosController < ApplicationController
 
   def index
-    Rails.logger.debug "DEBUG \n DEBUG >>> RELOADED \nDEBUG "
     load_data # @words_array, @selected, @comment, @comments, @photourl
     if @words_array.empty?
       3.times { @words_array.push(Word.search_word) }
       redirect_to(home_url + "?s=1&w=#{serialize_words(@words_array)}")
     else
-      logger.debug "DEBUG >>> index > words_array #{@words_array}"
       @words_array.each do |word|
         word.pictures.each { |p| @photourl.push(p.url) }
       end
@@ -18,21 +16,16 @@ class PhotosController < ApplicationController
     load_data
     if @words_array.empty? #refresh button
       3.times { @words_array.push(Word.search_word) }
+    else
+      @words_array.each do |word|
+        word.pictures.each { |p| @photourl.push(p.url) }
+      end
     end
     @words_string = serialize_words(@words_array)
+
     respond_to do |format|
-       format.js {
-         @words_array.each do |word|
-           word.pictures.each { |p| @photourl.push(p.url) }
-         end
-       }
-       format.html {
-         unless params[:w].nil?
-           redirect_to(home_url + "?s=#{params[:s]}&w=#{@words_string}")
-         else
-           redirect_to(home_url)
-         end
-       }
+       format.turbo_stream  {}
+       format.html          {render "index"}
     end
   end
 
@@ -40,19 +33,18 @@ class PhotosController < ApplicationController
     load_data
     word = Word.find_by(:value => params[:comment][:associated_word])
     @comment = word.comments.new(params.require(:comment).permit(:name, :email, :body, :associated_word))
-    words_string = serialize_words(@words_array)
+    @words_string = serialize_words(@words_array)
     saved = @comment.save
     if saved
       cookies[:name] = @comment.name
       cookies[:email] = @comment.email
     end
     respond_to do |format|
-      format.js {
-        render partial: "append_comment", locals: {comment: @comment, comments: @comments }
-      }
+      format.turbo_stream {}
       format.html {
         @comment.body = "" if saved
-        redirect_to(home_url + "?s=#{params[:s]}&w=#{words_string}")
+        flash[:error] = @comment.errors.messages.keys
+        redirect_to(home_url + "?s=#{params[:s]}&w=#{@words_string}#form-error" )
       }
     end
   end
@@ -70,17 +62,21 @@ class PhotosController < ApplicationController
       end
     end
     @selected = params[:s].to_i || 1
+    comment = @comment
+    puts "LOAD DATA #{comment}"
+
     @comment = Comment.new
     @comments = Comment.all.order("created_at DESC")
     @comment.name = cookies[:name]
     @comment.email = cookies[:email]
+    unless @words_array.empty? #refresh button
+      @words_string = serialize_words(@words_array)
+    end
     @photourl = []
-      logger.debug "load data words_array: #{@words_array} params #{params[:w]} uri = #{uri}"
   end
 
   private def serialize_words(words_array)
-    logger.debug "DEBUG >>> serialize_words > words_array = #{words_array}"
-    return "#{@words_array[0].value}|#{@words_array[1].value}|#{@words_array[2].value}"
+    return "#{words_array[0].value}|#{words_array[1].value}|#{words_array[2].value}"
   end
 
 end #PhotosController

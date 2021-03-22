@@ -1,0 +1,12 @@
+<%= turbo_stream.update "gallery_wrapper" do %>
+  <%= render "photo_gallery" %>
+<% end %>
+
+<% word = @words_array[@selected] %>
+<%= turbo_stream.update "comments_list" do %>
+  <%= tag.ul id: "comments_list" do %>
+    <%#= render partial: "comments_list" , locals: {comments: @comments, selected: @selected, words_array: @words_array} %>
+    <% word = @words_array[@selected] %>
+    <%= render word.comments %>
+  <% end %>
+<% end %>
