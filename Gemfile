@@ -27,6 +27,8 @@ gem 'excon'
 gem 'jquery-rails'
 
 gem 'hotwire-rails'
+
+gem 'devise'
 # gem 'rails-backup-migrate'
 
 # gem 'nokogiri'
