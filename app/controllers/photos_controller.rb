@@ -1,6 +1,8 @@
 class PhotosController < ApplicationController
+    before_action :authenticate_user!
 
   def index
+    logger.debug "Signed in? : #{user_signed_in?}"
     load_data # @words_array, @selected, @comment, @comments, @photourl
     if @words_array.empty?
       3.times { @words_array.push(Word.search_word) }
