@@ -1,6 +1,7 @@
 
 <h1>Photo Blog</h1>
 <%=tag.p "SIGNED IN: ---- #{current_user.email}" %>
+<%=link_to "log out", "/users/sign_out", { id: "logout", method: "DELETE" }%>
 <%=link_to "refresh", "/", { id: "refresh_icon", class: "material-icons", data: {turbolinks: true, controller: "refresh", action: "refresh#rotate"}}%>
 
 <div id="gallery_wrapper" class="gallery_wrapper">
