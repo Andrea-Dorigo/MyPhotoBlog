@@ -1,5 +1,5 @@
 class PhotosController < ApplicationController
-    before_action :authenticate_user!
+    # before_action :authenticate_user!
 
   def index
     logger.debug "Signed in? : #{user_signed_in?}"
