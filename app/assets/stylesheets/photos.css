@@ -1,5 +1,15 @@
 /* TODO: learn SCSS and SASS and update the stylesheet */
 /* TODO: substitute css variables where it's useful (now that I finally CAN use variables) */
+
+.work_in_progress {
+  background-color: #ddd;
+  padding:2em;
+}
+.work_in_progress a {
+  display: block;
+  margin: 1em;
+}
+
 * {
   margin:0;
   padding:0;

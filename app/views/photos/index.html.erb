@@ -1,10 +1,11 @@
+<div class="work_in_progress">
+  <%=tag.p "SIGNED IN: #{current_user.name if user_signed_in?}" %>
+  <%=link_to "sign out", "/users/sign_out", { method: "DELETE" }%>
+  <%=link_to "sign in", "/users/sign_in"%>
+  <%=link_to "edit profile", "/users/edit"%>
+</div>
 
 <h1>Photo Blog</h1>
-<%=tag.p "SIGNED IN: #{current_user.name if user_signed_in?}" %>
-<%=link_to "sign out", "/users/sign_out", { method: "DELETE" }%>
-<%=link_to "sign in", "/users/sign_in"%>
-<%=link_to "edit profile", "/users/edit"%>
-
 
 
 <%=link_to "refresh", "/", { id: "refresh_icon", class: "material-icons", data: {turbolinks: true, controller: "refresh", action: "refresh#rotate"}}%>
