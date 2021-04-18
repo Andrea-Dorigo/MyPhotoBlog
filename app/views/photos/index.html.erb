@@ -1,6 +1,6 @@
 
 <h1>Photo Blog</h1>
-<%=tag.p "SIGNED IN: ---- #{current_user.email if user_signed_in?}" %>
+<%=tag.p "SIGNED IN: #{current_user.name if user_signed_in?}" %>
 <%=link_to "sign out", "/users/sign_out", { method: "DELETE" }%>
 <%=link_to "sign in", "/users/sign_in"%>
 <%=link_to "edit profile", "/users/edit"%>
